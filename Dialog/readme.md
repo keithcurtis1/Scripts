@@ -1,4 +1,4 @@
-#DIALOG 0.1
+# DIALOG 0.1
 
 Dialog is a script that makes chat a bit more fun and easier to parse. It is token-based, either using selected and targeted tokens or specific token IDs.
 
