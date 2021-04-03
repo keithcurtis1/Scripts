@@ -5,7 +5,8 @@ on('ready', () => {
             let theMessage = "";
             let toName = "";
             let repeatCode = "";
-            let tt=[]
+            let tt=[];
+            let wType = "";
 
             //CSS Declarations
             const openBox =         "<div style='margin-left:-30px; border: 0px none; margin-top: 10px; border-radius: 6px 6px 6px 6px;  box-shadow: 2px 2px 4px 2px #000; background-color: #ffffff; min-height:60px; display: block; padding:5px 5px 0px 5px; text-align: left;  white-space: pre-wrap; !important'>";
@@ -151,15 +152,15 @@ if (msg.content !== "!dialog --help"){
                         type: 'graphic',
                         id: fromID
                     })[0];
-                    
-                    
+
                     
                  if (toID !== "") {
                     let tt = findObjs({
                         type: 'graphic',
                         id: toID
                     })[0];
-                     toName = tt.get("name")
+                     toName = tt.get("name");
+                     toCharID = tt.get("represents")
                     } else {
                         toName = "whispered: "
                  }
@@ -232,6 +233,9 @@ let quoteCommand = `!dialog --id|${fromID} --type|quote --?{Speech|speech}`;
                                     button3 = makeButton("WHISPER", whisperCommand, whisperButtonStyle);
                                     button4 = makeButton("QUOTE", quoteCommand, whisperButtonStyle);
                                     repeatCode = `!dialog --id|${fromID} --to|${toID} --?{Input Dialog|Speech}`;
+                                    
+                                    wType = `/w "${(getObj('character',toCharID)).get('name')}" `;
+                                    
                                     theMessage = "<span style='font-size: .8em; color: #ccc !important'>to "+toName+":</span><BR>" + theMessage
                                     break;
                                 case "ooc":
@@ -267,12 +271,21 @@ let quoteCommand = `!dialog --id|${fromID} --type|quote --?{Speech|speech}`;
 
 
                             //Quote Style
-
+log("wType 1= "+wType);
 
                             //Whisper Style
-                            let buttonHolder = `<p><div style = 'bottom: -10px; border: 0px none;  border-top: 1px solid rgba(0,0,0,0.1); border-radius: 0px 0px 0px 2px;  align:center; width:100%%; text-align: center; font-size: 0.85em; font-family: sans-serif; font-style: normal; font-weight: normal; color: #fff; padding: 0px; display: inline-block !important'>${button1}${button2}${button4}</div></p>`
+ 
 
+
+
+
+                            let buttonHolder = `<p><div style = 'bottom: -10px; border: 0px none;  border-top: 1px solid rgba(0,0,0,0.1); border-radius: 0px 0px 0px 2px;  align:center; width:100%%; text-align: center; font-size: 0.85em; font-family: sans-serif; font-style: normal; font-weight: normal; color: #fff; padding: 0px; display: inline-block !important'>${button1}${button2}${button4}</div></p>`
+                            if (messageType === "whisper"){
+                            sendChat(tokenName, `/w "${(getObj('character',toCharID)).get('name')}"` + box + imageFormat(tokenImage, tokenID) + messageFormat(theMessage) + buttonHolder + closeBox);
+                            sendChat(tokenName, `/w "${p.get('_displayname')}" ` + box + imageFormat(tokenImage, tokenID) + messageFormat(theMessage) + buttonHolder + closeBox);
+}else{
                             sendChat(tokenName, "" + box + imageFormat(tokenImage, tokenID) + messageFormat(theMessage) + buttonHolder + closeBox);
+}
                         } else {
                             sendChat('', `/w gm No character found for ID <b>${a[1]}</b>!`);
                         }
