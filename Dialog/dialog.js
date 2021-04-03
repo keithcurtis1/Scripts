@@ -1,4 +1,8 @@
 on('ready', () => {
+    const version = '0.0.2';
+    const sheetVersion = 'D&D 5th Edition by Roll20';
+
+    
     on('chat:message', (msg) => {
         if ('api' === msg.type && /^!dialog/i.test(msg.content)) {
             let p = getObj('player', msg.playerid);
@@ -306,4 +310,5 @@ log("wType 1= "+wType);
 
         }
     });
+    log (`Dialog v.${version} is ready! Command is: !Dialog --id|token_id [--to|token_id] [--type|type] --message`);
 });
