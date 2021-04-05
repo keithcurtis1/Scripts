@@ -30,18 +30,18 @@ on('ready', () => {
             } else {
 
                 //CSS Declarations
-                const openBox = "<div style='margin-left:-30px; border: 0px none; margin-top: 10px; border-radius: 6px 6px 6px 6px;  box-shadow: 2px 2px 4px 2px #000; background-color: #ffffff; min-height:60px; display: block; padding:5px 5px 0px 5px; text-align: left;  white-space: pre-wrap; !important'>";
-                const openQuoteBox = "<div style='margin-left:-30px; border: 0px none; margin-top: 10px; border-radius: 35px 6px 6px 6px; box-shadow: 2px 2px 4px 2px #000; background-color: #e0e0d1; min-height:60px; display: block; padding:5px 5px 0px 5px; text-align: left;  white-space: pre-wrap;'>";
-                const openWhisperBox = "<div style='margin-left:-30px; border: 0px none; margin-top: 10px; border-radius: 35px 6px 6px 6px; box-shadow: 2px 2px 4px 2px #000; background-color: #666666; min-height:60px; display: block; padding:5px 5px 0px 5px; text-align: left;  white-space: pre-wrap;'>";
-                const openoocBox = "<div style='margin-left:-30px; border: 0px none; margin-top: 10px; border-radius: 35px 6px 6px 6px; box-shadow: 2px 2px 4px 2px #000; background-color: #ffffff; min-height:60px; display: block; padding:5px 5px 0px 5px; text-align: left;  white-space: pre-wrap;'>";
-                const openEmoteBox = "<div style='margin-left:-30px; border: 0px none; margin-top: 10px; border-radius: 35px 6px 6px 6px; box-shadow: 2px 2px 4px 2px #000; background-color: #68895d; min-height:60px; display: block; padding:5px 5px 0px 5px; text-align: left;  white-space: pre-wrap;'>";
-                const openLanguageBox = "<div style='margin-left:-30px; border: 0px none; margin-top: 10px; border-radius: 35px 6px 6px 6px; box-shadow: 2px 2px 4px 2px #000; background-color: #68895d; background: rgb(212,196,140); background: linear-gradient(0deg, rgba(212,196,140,1) 0%, rgba(242,234,198,1) 100%); min-height:60px; display: block; padding:5px 5px 0px 5px; text-align: left;  white-space: pre-wrap;'>";
+                const openBox = "<div style='margin-left:-30px; border: 0px none; margin-top: 5px; border-radius: 6px 6px 6px 6px;  box-shadow: 2px 2px 4px 2px #000; background-color: #ffffff; min-height:60px; display: block; padding:2px 5px 0px 5px; text-align: left;  white-space: pre-wrap; !important'>";
+                const openQuoteBox = "<div style='margin-left:-30px; border: 0px none; margin-top: 5px; border-radius: 35px 6px 6px 6px; box-shadow: 2px 2px 4px 2px #000; background-color: #e0e0d1; min-height:60px; display: block; padding:2px 5px 0px 5px; text-align: left;  white-space: pre-wrap;'>";
+                const openWhisperBox = "<div style='margin-left:-30px; border: 0px none; margin-top: 5px; border-radius: 35px 6px 6px 6px; box-shadow: 2px 2px 4px 2px #000; background-color: #666666; min-height:60px; display: block; padding:2px 5px 0px 5px; text-align: left;  white-space: pre-wrap;'>";
+                const openoocBox = "<div style='margin-left:-30px; border: 0px none; margin-top: 5px; border-radius: 35px 6px 6px 6px; box-shadow: 2px 2px 4px 2px #000; background-color: #ffffff; min-height:60px; display: block; padding:5px 2x 0px 5px; text-align: left;  white-space: pre-wrap;'>";
+                const openEmoteBox = "<div style='margin-left:-30px; border: 0px none; margin-top: 5px; border-radius: 35px 6px 6px 6px; box-shadow: 2px 2px 4px 2px #000; background-color: #68895d; min-height:60px; display: block; padding:5px 2px 0px 5px; text-align: left;  white-space: pre-wrap;'>";
+                const openLanguageBox = "<div style='margin-left:-30px; border: 0px none; margin-top: 5px; border-radius: 35px 6px 6px 6px; box-shadow: 2px 2px 4px 2px #000; background-color: #68895d; background: rgb(212,196,140); background: linear-gradient(0deg, rgba(212,196,140,1) 0%, rgba(242,234,198,1) 100%); min-height:60px; display: block; padding:5px 5px 0px 5px; text-align: left;  white-space: pre-wrap;'>";
                 const closeBox = "</div>";
-                const quoteStyle = `<p style = 'font-size: 1.4em; line-height:1.2; font-family: serif; font-style: italic; font-weight: 700; color: #372d16; margin: 5px;'>&#10077; `
-                const whisperStyle = `<p style = 'font-size: 1.4em; line-height:1.2; font-family: serif; font-style: italic; font-weight: 700; color: #f2f2f2; margin: 5px;'>`
-                const oocStyle = `<p style = 'font-size: 1.4em; line-height:1.2; font-family: serif; font-weight: 700; color: #372d16; margin: 5px;'>`
-                const emoteStyle = `<p style = 'font-size: 1.4em; line-height:1.2; font-family: serif; font-style: italic; font-weight: 700; color: #fff; margin: 5px;'>&#10095; `
-                const languagetyle = `<p style = 'font-size: 1.4em; line-height:1.2; font-family: serif; font-style: italic; font-weight: 700; color: #fff; margin: 5px;'>&#10095; `
+                const quoteStyle = `<p style = 'font-size: 1.2em; line-height:1.0; font-family: serif; font-style: italic; font-weight: 700; color: #372d16; margin: 5px;'>&#10077; `
+                const whisperStyle = `<p style = 'font-size: 1.2em; line-height:1.0; font-family: serif; font-style: italic; font-weight: 700; color: #f2f2f2; margin: 5px;'>`
+                const oocStyle = `<p style = 'font-size: 1.2em; line-height:1.0; font-family: serif; font-weight: 700; color: #372d16; margin: 5px;'>`
+                const emoteStyle = `<p style = 'font-size: 1.2em; line-height:1.0; font-family: serif; font-style: italic; font-weight: 700; color: #fff; margin: 5px;'>&#10095; `
+                const languagetyle = `<p style = 'font-size: 1.4em; line-height:1.0; font-family: serif; font-style: italic; font-weight: 700; color: #fff; margin: 5px;'>&#10095; `
                 const buttonStyle = "'background-color: transparent; align:right; font-size: 0.8em; line-height:1.2; font-family: sans-serif; font-style: normal; font-weight: normal; padding: 0px;color: #ce0f69;display: inline-block;border: none; !important'";
                 const quoteButtonStyle = "<a style = 'border: 0px none; background-color: #5b4b24; width:23%; text-align: center; font-size: 0.85em; font-family: sans-serif; font-style: normal; font-weight: normal; color: #fff; line-height:1.2; margin: 0px 1px 0px 1px; padding: 0px; display: inline-block !important'";
                 const whisperButtonStyle = "<a style = 'border: 0px none; background-color: #333;    width:23%; text-align: center; font-size: 0.85em; font-family: sans-serif; font-style: normal; font-weight: normal; color: #fff; line-height:1.2; margin: 0px 1px 0px 1px; padding: 0px; display: inline-block !important'";
@@ -94,7 +94,7 @@ on('ready', () => {
 
 
                 function imageFormat(imgsrc, tokenID) {
-                    return `<a style='background-color: transparent; float:left; border: none; !important' href = '${repeatCode}'><img style = 'max-height: 70px; margin:-15px 2px 5px -15px' src = '${imgsrc}'></a>`;
+                    return `<a style='background-color: transparent; float:left; border: none; !important' href = '${repeatCode}'><img style = 'max-height: 70px; margin:-10px 2px 5px -10px' src = '${imgsrc}'></a>`;
                 }
 
                 function messageFormat(theMessage) {
@@ -243,8 +243,9 @@ on('ready', () => {
                                     let emoteCommand = `!dialog --id|${fromID} --type|emote --?{Emote|Emote}`;
                                     let oocCommand = `!dialog --id|${fromID} --type|ooc --?{Out of Character|ooc}`;
                                     let whisperCommand = "!dialog --id|" + ((toID === currentGMID) ? 'gm' : toID) + " --to|" + ((fromGM) ? 'gm' : fromID) + " --?{Input Whisper|Whisper}";
+                                    let whisperGMCommand = `!dialog --id| --id|${fromID} --to|gm --?{Input Whisper|Whisper}`;
                                     let quoteCommand = `!dialog --id|${fromID} --type|quote --?{Speech|speech}`;
-
+                                    let buttonsIncluded = "";
 
 
                                     switch (messageType) {
@@ -254,7 +255,8 @@ on('ready', () => {
                                             button1 = makeButton("QUOTE", quoteCommand, quoteButtonStyle);
                                             button2 = makeButton("EMOTE", emoteCommand, quoteButtonStyle);
                                             button3 = makeButton("OOC", oocCommand, quoteButtonStyle);
-                                            button4 = makeButton("RESPOND", whisperCommand, quoteButtonStyle);
+                                            buttonsIncluded = `${button1}${button2}${button3}`;
+                                            button4 = makeButton("TO GM", whisperGMCommand, quoteButtonStyle);
                                             repeatCode = `!dialog --id|${fromID} --?{Input Dialog|Speech}`
                                             break;
 
@@ -266,7 +268,7 @@ on('ready', () => {
                                             button3 = makeButton("OOC", oocCommand, whisperButtonStyle);
                                             button4 = makeButton("RESPOND", whisperCommand, whisperButtonStyle);
                                             repeatCode = "!dialog --id|" + ((toID === currentGMID) ? 'gm' : toID) + " --to|" + ((fromGM) ? 'gm' : fromID) + " --?{Input Whisper|Whisper}";
-                                            theMessage = "<span style='font-size: .7em; color: #ccc !important'>" + tokenName + " => " + toName + ":</span><BR>" + theMessage
+                                            theMessage = "<span style='font-size: .7em; line-height:.7; color: #bbb !important'>" + tokenName + " => " + toName + ":</span><BR>" + theMessage
                                             break;
                                         case "ooc":
                                             box = openoocBox;
@@ -274,7 +276,7 @@ on('ready', () => {
                                             button1 = makeButton("QUOTE", quoteCommand, oocButtonStyle);
                                             button2 = makeButton("EMOTE", emoteCommand, oocButtonStyle);
                                             button3 = makeButton("OOC", oocCommand, oocButtonStyle);
-                                            button4 = makeButton("RESPOND", whisperCommand, oocButtonStyle);
+                                            button4 = makeButton("TO GM", whisperGMCommand, oocButtonStyle);
                                             repeatCode = `!dialog --id|${fromID} --type|ooc --?{Input Dialog|Speech}`
                                             break;
                                         case "emote":
@@ -283,7 +285,7 @@ on('ready', () => {
                                             button1 = makeButton("QUOTE", quoteCommand, emoteButtonStyle);
                                             button2 = makeButton("EMOTE", emoteCommand, emoteButtonStyle);
                                             button3 = makeButton("OOC", oocCommand, emoteButtonStyle);
-                                            button4 = makeButton("RESPOND", whisperCommand, emoteButtonStyle);
+                                            button4 = makeButton("TO GM", whisperGMCommand, emoteButtonStyle);
                                             repeatCode = `!dialog --id|${fromID} --type|emote --?{Input Dialog|Speech}`
                                             theMessage = tokenName + " " + theMessage
                                             break;
@@ -293,7 +295,7 @@ on('ready', () => {
                                             button1 = makeButton("QUOTE", quoteCommand, quoteButtonStyle);
                                             button2 = makeButton("EMOTE", emoteCommand, quoteButtonStyle);
                                             button3 = makeButton("OOC", oocCommand, quoteButtonStyle);
-                                            button4 = makeButton("RESPOND", whisperCommand, quoteButtonStyle);
+                                            button4 = makeButton("TO GM", whisperGMCommand, quoteButtonStyle);
                                             repeatCode = `!dialog --id|${fromID} --?{Input Dialog|Speech}`;
                                     }
 
@@ -303,7 +305,7 @@ on('ready', () => {
                                     }
 
 
-                                    let buttonHolder = `<p><div style = 'bottom: -10px; border: 0px none;  border-top: 1px solid rgba(0,0,0,0.1); border-radius: 0px 0px 0px 2px;  align:center; width:100%%; text-align: center; font-size: 0.85em; font-family: sans-serif; font-style: normal; font-weight: normal; color: #fff; padding: 0px; display: inline-block !important'>${button1}${button2}${button3}${button4}</div></p>`
+                                   let buttonHolder = `<p><div style = 'bottom: -10px; border: 0px none;  border-top: 1px solid rgba(0,0,0,0.1); border-radius: 0px 0px 0px 2px;  align:center; width:100%%; text-align: center; font-size: 0.85em; font-family: sans-serif; font-style: normal; font-weight: normal; color: #fff; padding: 0px; display: inline-block !important'>${button1}${button2}${button3}${button4}</div></p>`
                                     if (messageType === "whisper") {
 
                                         sendChat(tokenName, `/w "${toName}"` + box + imageFormat(tokenImage, tokenID) + messageFormat(theMessage) + buttonHolder + closeBox);
