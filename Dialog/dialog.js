@@ -1,10 +1,11 @@
 on('ready', () => {
-    const version = '0.0.4';
+    const version = '0.0.5';
     const sheetVersion = 'D&D 5th Edition by Roll20';
 
 
     on('chat:message', (msg) => {
         if ('api' === msg.type && /^!dialog/i.test(msg.content)) {
+
             let p = getObj('player', msg.playerid);
             let theMessage = "";
             let toName = "";
@@ -19,8 +20,9 @@ on('ready', () => {
             let tokenID = "";
             let tokenControlledby = "";
             let languageSender = "";
-            let ls = []
-
+            let ls = [];
+            let languageBackgroundColor = "#e6e6e6";
+            let languageTextColor = "#000";
 
             let currentGM = findObjs({
                     type: 'player'
@@ -37,7 +39,7 @@ on('ready', () => {
                 const openWhisperBox = "<div style='margin-left:-30px; border: 0px none; margin-top: 5px; border-radius: 35px 6px 6px 6px; box-shadow: 2px 2px 4px 2px #000; background-color: #666; background-image: linear-gradient(0deg, #888, #555);min-height:60px; display: block; padding:0px 5px 0px 5px; text-align: left;  white-space: pre-wrap;'>";
                 const openoocBox = "<div style='margin-left:-30px; border: 0px none; margin-top: 5px; border-radius: 35px 6px 6px 6px; box-shadow: 2px 2px 4px 2px #000; background-color: #ffffff; min-height:60px; display: block; padding:5px 2x 0px 5px; text-align: left;  white-space: pre-wrap;'>";
                 const openEmoteBox = "<div style='margin-left:-30px; border: 0px none; margin-top: 5px; border-radius: 35px 6px 6px 6px; box-shadow: 2px 2px 4px 2px #000; background-color: #68895d; min-height:60px; display: block; padding:5px 2px 0px 5px; text-align: left;  white-space: pre-wrap;'>";
-                const openLanguageBox = "<div style='margin-left:-30px; border: 0px none; margin-top: 5px; border-radius: 35px 6px 6px 6px; box-shadow: 2px 2px 4px 2px #000; background-color: #038; min-height:60px; display: block; padding:5px 5px 0px 5px; text-align: left;  white-space: pre-wrap;'>";
+                let openLanguageBox = "<div style='margin-left:-30px; border: 0px none; margin-top: 5px; border-radius: 35px 6px 6px 6px; box-shadow: 2px 2px 4px 2px #000; background-color: " + languageBackgroundColor + "; min-height:60px; display: block; padding:5px 5px 0px 5px; text-align: left;  white-space: pre-wrap;'>";
                 const openLanguageAnnouncementBox = "<div style='margin-left:-30px; border: 0px none; margin-top: 0px; border-radius: 12px 12px 12px 12px; background-color: #000; display: block; padding:1px 3px 1px 3px; text-align: left;  white-space: pre-wrap;'>";
                 const closeBox = "</div>";
                 const openBigQuote = "<span style='color: #989867'>&#10077;</span> "
@@ -46,7 +48,7 @@ on('ready', () => {
                 const whisperStyle = `<p style = 'font-size: 1.2em; line-height:1.0; font-family: serif; font-style: italic; font-weight: 700; color: #f2f2f2; margin: 5px;'>`
                 const oocStyle = `<p style = 'font-size: 1.2em; line-height:1.0; font-family: serif; font-weight: 700; color: #372d16; margin: 5px;'>`
                 const emoteStyle = `<p style = 'font-size: 1.2em; line-height:1.0; font-family: serif; font-style: italic; font-weight: 700; color: #fff; margin: 5px;'>&#10095; `
-                const languageStyle = `<p style = 'font-size: 1.4em; line-height:1.0; font-family: serif; font-style: italic; font-weight: 700; color: #fff; margin: 5px;'>&#171; `
+                let languageStyle = `<p style = 'font-size: 1.4em; line-height:1.0; font-family: serif; font-style: italic; font-weight: 700; color: ${languageTextColor}; margin: 5px;'>&#171; `
                 const LanguageAnnouncementStyle = `<div style = 'font-size: 1.0em; line-height:1.0; text-align: center; font-family: serif; font-style:normal; font-weight: 700; color: #fff; margin: 5px !important'>`
                 const buttonStyle = "'background-color: transparent; align:right; font-size: 0.8em; line-height:1.2; font-family: sans-serif; font-style: normal; font-weight: normal; padding: 0px;color: #ce0f69;display: inline-block;border: none; !important'";
                 const quoteButtonStyle = "<a style = 'border: 0px none; background-color: #5b4b24; width:23%; text-align: center; font-size: 0.85em; font-family: sans-serif; font-style: normal; font-weight: normal; color: #fff; line-height:1.2; margin: 0px 1px 0px 1px; padding: 0px; display: inline-block !important'";
@@ -112,10 +114,17 @@ on('ready', () => {
                     return (s) => s.replace(re, (c) => (entities[c] || c));
                 })();
 
+                const L = (o) => Object.keys(o).forEach(k => log(`${k} is ${o[k]}`));
+
+
                 function makeButton(label, command, style) {
                     return style + `href = '` + command + `'>` + label + `</a>`;
                 }
 
+                function isColor(value) {
+                    return /^#?[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$/.test(value)
+
+                }
 
                 function imageFormat(imgsrc, tokenID) {
                     return `<a style='background-color: transparent; float:left; border: none; !important' href = '${repeatCode}'><img style = 'max-height: 70px; margin:-10px 2px 5px -10px' src = '${imgsrc}'></a>`;
@@ -134,6 +143,56 @@ on('ready', () => {
                     return '<a style = ' + buttonStyle + ' href="' + link + '">' + name + '</a>';
                 }
                 let fromID = "";
+
+                const hexToRGB = (h) => {
+                    let r = 0,
+                        g = 0,
+                        b = 0;
+
+                    // 3 digits
+                    if (h.length === 4) {
+                        r = "0x" + h[1] + h[1];
+                        g = "0x" + h[2] + h[2];
+                        b = "0x" + h[3] + h[3];
+                        // 6 digits
+                    } else if (h.length === 7) {
+                        r = "0x" + h[1] + h[2];
+                        g = "0x" + h[3] + h[4];
+                        b = "0x" + h[5] + h[6];
+                    }
+                    return [+r, +g, +b];
+                };
+
+                const RGBToHex = (r, g, b) => {
+                    r = r.toString(16);
+                    g = g.toString(16);
+                    b = b.toString(16);
+
+                    if (r.length === 1)
+                        r = "0" + r;
+                    if (g.length === 1)
+                        g = "0" + g;
+                    if (b.length === 1)
+                        b = "0" + b;
+
+                    return "#" + r + g + b;
+                };
+
+                const getAltColor = (primarycolor) => {
+                    let pc = hexToRGB(primarycolor);
+                    let sc = [0, 0, 0];
+
+                    for (let i = 0; i < 3; i++) {
+                        sc[i] = Math.floor(pc[i] + (.35 * (255 - pc[i])));
+                    }
+
+                    return RGBToHex(sc[0], sc[1], sc[2]);
+                };
+
+                const getTextColor = (h) => {
+                    let hc = hexToRGB(h);
+                    return (((hc[0] * 299) + (hc[1] * 587) + (hc[2] * 114)) / 1000 >= 128) ? "#000000" : "#ffffff";
+                };
 
                 /*            if (undefined !== msg.selected) {
                                 fromID = "";
@@ -157,7 +216,7 @@ on('ready', () => {
                 */
                 if (p) {
 
-                    if (msg.content !== "!dialog --help") {
+                    if (msg.content !== "!dialog --help" && msg.content !== "!dialog --macro" && !msg.content.includes("!dialog --assign")) {
 
                         let args = msg.content.split(" --")
 
@@ -229,7 +288,9 @@ on('ready', () => {
                                 tokenImage = t.get('imgsrc');
                                 tokenName = t.get('name');
                                 tokenID = t.get('_id');
-                                tokenControlledby = t.get('controlledby')
+                                //tokenControlledby = t.get('controlledby')
+                                tokenControlledby = getObj('character', t.get('represents')).get('controlledby');
+
                             }
 
                             if (isID(toID)) {
@@ -313,13 +374,27 @@ on('ready', () => {
                                             theMessage = "<span style='font-size: .7em; padding-bottom: 5px; display:inline-block; font-style: normal; line-height:.7; color: #bbb !important'>" + tokenName + " => " + toName + ":</span><BR>" + theMessage
                                             break;
                                         case "language":
+                                            languageBackgroundColor = t.get("bar1_value");
+                                            log("languageBackgroundColor is " + languageBackgroundColor);
+                                            log("Is color? " + isColor(languageBackgroundColor));
+                                            if (isColor(languageBackgroundColor)) {
+                                                languageTextColor = getTextColor(languageBackgroundColor)
+                                                languageStyle = `<p style = 'font-size: 1.4em; line-height:1.0; font-family: serif; font-style: italic; font-weight: 700; color: ${languageTextColor}; margin: 5px;'>&#171; `
+                                                openLanguageBox = "<div style='margin-left:-30px; border: 0px none; margin-top: 5px; border-radius: 35px 6px 6px 6px; box-shadow: 2px 2px 4px 2px #000; background-color: " + languageBackgroundColor + "; min-height:60px; display: block; padding:5px 5px 0px 5px; text-align: left;  white-space: pre-wrap;'>";
+                                            } else {
+                                                languageBackgroundColor = "#e6e6e6";
+                                                languageTextColor = "#000"
+                                            }
+
                                             box = openLanguageBox;
-                                            messageStyle = languageStyle
+                                            messageStyle = languageStyle;
+
                                             button1 = ""; //makeButton("QUOTE", quoteCommand, whisperButtonStyle);
                                             button2 = ""; //("EMOTE", emoteCommand, whisperButtonStyle);
                                             button3 = ""; //("OOC", oocCommand, whisperButtonStyle);
                                             button4 = makeButton("RESPOND IN " + tokenName.toUpperCase(), languageCommand, languageButtonStyle);
                                             repeatCode = "!dialog --id|" + toID + " --to|" + fromID + " --?{Input Speech to translate|speech}";
+                                            repeatCode = languageCommand;
                                             //theMessage = "<span style='font-size: .7em; padding-bottom: 5px; display:inline-block; font-style: normal; line-height:.7; color: #bbb !important'>" + tokenName + " => " + toName + ":</span><BR>" + theMessage
                                             break;
                                         case "ooc":
@@ -362,16 +437,16 @@ on('ready', () => {
                                     switch (messageType) {
                                         case "whisper":
                                             sendChat(tokenName, `/w "${toName}"` + box + imageFormat(tokenImage, tokenID) + messageFormat(theMessage) + buttonHolder + closeBox);
-                                            log ("A");
+                                            log("A");
                                             sendChat(tokenName, `/w "${p.get('_displayname')}" ` + box + imageFormat(tokenImage, tokenID) + messageFormat(theMessage) + buttonHolder + closeBox);
-                                            log ("B");
+                                            log("B");
                                             break;
                                         case "language":
                                             let speakerName = (getObj('graphic', toID)).get('name');
                                             let speakerImg = `<img src ='${(getObj('graphic', toID)).get('imgsrc')}' style = 'max-height: 25px; float: left; margin-top: -6px; margin-left: -10px !important'> `;
                                             log("speakerImg is " + speakerImg);
                                             theMessage = theMessage + " &#187;";
-                                            sendChat('Language', openLanguageAnnouncementBox + LanguageAnnouncementStyle + speakerImg + `${speakerName} speaks ${tokenName}</div>`);
+                                            sendChat('Language', openLanguageAnnouncementBox + LanguageAnnouncementStyle + speakerImg + `${speakerName} speaks in ${tokenName}</div>`);
                                             sendChat(tokenName, `/w "${tokenName}"` + box + imageFormat(tokenImage, tokenID) + messageFormat(theMessage) + buttonHolder + closeBox);
                                             break;
                                         default:
@@ -408,8 +483,93 @@ on('ready', () => {
                             sendChat('', `/w ${p.get('_displayname')} You must specify a token ID of a character you control.`);
                         }
                     } else {
-                        sendChat('Dialog', helpText);
 
+                        switch (msg.content) {
+                            case "!dialog --help":
+                                sendChat('Dialog', helpText);
+                                break;
+                            case "!dialog --macro":
+                                // code block
+                                if (msg.selected) {
+                                    selection = msg.selected
+                                        .map(o => getObj('graphic', o._id))
+                                        .filter(o => undefined !== o)
+
+                                    let languageTokens = selection
+                                        .filter(t => t.get('represents').length)
+                                        .map(t => ({
+                                            token: t,
+                                            character: getObj('character', t.get('represents'))
+                                        }))
+                                        .filter(o => undefined !== o.character);
+
+                                    let macroCode = `!dialog --id|?{Select a Language`;
+                                    let ltName = "";
+                                    let ltID = "";
+
+                                    languageTokens.forEach(lt => {
+                                        ltName = lt.character.get("name");
+                                        ltID = lt.token.get("_id");
+                                        macroCode = macroCode + `|${ltName},${ltID}`
+                                    });
+
+                                    macroCode = macroCode + `} --to|${HE(HE('@{selected|token_id}'))} --type|language --?{message|message}`;
+                                    sendChat('Dialog', `Paste this code into a macro or ability.<BR><pre>${macroCode}</pre>`);
+
+                                    L({
+                                        macroCode
+                                    })
+                                } else {
+                                    log("You must select some language tokens");
+
+                                }
+                                break;
+                            default:
+                                break;
+}
+
+                                if (msg.content.includes("!dialog --assign")) {
+                                    
+
+                                    let speaker = msg.content.split(/\s+/)[2]
+                                    let language = msg.content.split(/\s+/)[3]
+                                    if (isID(speaker) && isID(language)) {
+                                        let speakerCharacter = getObj('character', speaker);
+                                        let languageCharacter = getObj('character', language);
+
+                                        let speakerName = speakerCharacter.get('name');
+                                        let languageName = languageCharacter.get('name');
+                                        let languageControllers = languageCharacter.get('controlledby');
+                                        let speakerController = speakerCharacter.get('controlledby');
+                                        L({
+                                            languageControllers,
+                                            speakerController
+                                        });
+
+                                        let lcControl = languageControllers.split(/\s*,\s*/);
+                                        let scControl = speakerController.split(/\s*,\s*/);
+                                        let targetControl = [...new Set([...lcControl, ...scControl])];
+
+                                        targetControl = targetControl.join(',');
+                                        languageCharacter.set("controlledby", targetControl);
+                                        sendChat('Dialog', `${openBox}${speakerName} can now speak ${languageName}${closeBox}`);
+                                        L({
+                                            targetControl
+                                        });
+
+                                    }
+                                    if (speaker && language) {
+                                        L({
+                                            speaker,
+                                            language
+                                        });
+                                    } else {
+                                        log("Character ids not recorded. Make sure you have a player character token selected, that they are listed as the first controller in the list of controllers. Make sure that the token you target (the second id passed to the script) is a token that represents a character that is intended to be a language.");
+                                    }
+
+                                }
+
+                        
                     }
 
                 }
