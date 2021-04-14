@@ -18,14 +18,15 @@ Note about whispers: because the API cannot issue a target command, you must ini
 
 **Sample Macros**
 
-**Basic quote:** !dialog --id|@{selected|token_id} --?{message|message}
+**Basic quote:** `!dialog --id|@{selected|token_id} --?{message|message}`
 
-**Start a whisper:** !dialog --id|@{selected|token_id} --@{target|token_id} --?{message|message}
+**Start a whisper:** `!dialog --id|@{selected|token_id} --@{target|token_id} --?{message|message}`
 
 `!dialog --help`: displays this help box.
 
 
 **Language**
+
 The language feature of Dialog is based on the fact that whispers to a shared character will be seen by all players who are listed as controllers of that character. You can create a simple NPC and name it 'Dwarvish' for example and assign control of it to all players in the campaign who speak Dwarvish. While this is an old trick, Dialog makes it easier and more fun to manage language characters and to speak in the languages.
 
 The language feature shares many similarities to the whisper function, but with this difference: no matter who is the speaker, the message is sent from the language character. This ensures that there will be no duplicate messages posted and that a language token image is included to identify the language. An announcement box will precede the dialog, indicating who the true speaker of the message is and what language they are speaking. Only the speaker of the language will see the message. Everyone else will only see the announcement, letting them know the speaker and the language, but not the content.
