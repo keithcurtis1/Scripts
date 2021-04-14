@@ -1,4 +1,4 @@
-# DIALOG 0.1
+# DIALOG 0.0.5
 
 Dialog is a script that makes chat a bit more fun and easier to parse. It is token-based, either using selected and targeted tokens or specific token IDs.
 
@@ -46,6 +46,7 @@ I have included a dropbox link to some basic SRD language token images. You can 
 
 
 **Helpful Macros**
+
 Assign control of a language to a character - For this it would be helpful to create a page with all of your language tokens together.Place the player token on that page, select it and run:
 
 `!dialog --assign selected|character_id target|character_id`
