@@ -56,7 +56,7 @@ on('ready', () => {
                 const oocButtonStyle = "<a style = 'border: 0px none; background-color: #000;    width:23%; text-align: center; font-size: 0.85em; font-family: sans-serif; font-style: normal; font-weight: normal; color: #fff; line-height:1.2; margin: 0px 1px 0px 1px; padding: 0px; display: inline-block !important'";
                 const emoteButtonStyle = "<a style = 'border: 0px none; background-color: #3a4c34; width:23%; text-align: center; font-size: 0.85em; font-family: sans-serif; font-style: normal; font-weight: normal; color: #fff; line-height:1.2; margin: 0px 1px 0px 1px; padding: 0px; display: inline-block !important'";
                 const languageButtonStyle = "<a style = 'border: 0px none; background-color: #000; width:95%; text-align: center; font-size: 0.85em; font-family: sans-serif; font-style: normal; font-weight: normal; color: #fff; line-height:1.2; margin: 0px 1px 0px 1px; padding: 0px; display: inline-block !important'";
-                const helpText = openBox + "<div style = 'background-color: #000; color: #fff; line-height: 1.4em;!important'>** DIALOG 0.1**</div>" +
+                const helpText = openBox + `<div style = 'background-color: #000; color: #fff; line-height: 1.4em;!important'>** DIALOG ${version}**</div>` +
                     "Dialog is a script that makes chat a bit more fun and easier to parse. It is token-based, either using selected and targeted tokens or specific token IDs." +
                     "<BR>" +
                     "<BR>" +
@@ -75,7 +75,20 @@ on('ready', () => {
                     "<code>--*message*</code>: anything placed after -- that does not match one of the other tags becomes the defacto message." +
                     "<BR>" +
                     "<BR>" +
+                    "<code>!dialog --help</code>: displays this help box." +
+                    "<BR>" +
+                    "<BR>" +
+                    "<code>!dialog --languagehelp</code>: displays a help box for the language system below. The syntax additions are detailed below, but include:"+
+                    "<BR>" +
+                    "<BR>" +
+                    "<code>!dialog --assign character_id character_id</code>: Assigns a speaker as a controller of a language. Assigns a speaker (first id) as a controller of a language (second id). A prebuilt macro is available in languagehelp"+
+                    "<BR>" +
+                    "<BR>" +
+                    "<code>!dialog --macro</code>: Generates a user macro or action from the selected language tokens."+
+                    "<BR>" +
+                    "<BR>" +
                     "**Token Image:** Clicking on the token image will repeat the last configuration. If you sent an emote, it will send another emote, propting you for the content. If you sent a whisper, it will send a whisper to the person you were whispering to. In this way, two characters who have started a whispered conversation can keep it going by just clicking on their token image in chat." +
+                    "<BR>" +
                     "<BR>" +
                     "**Button Line:** There is a line of buttons at the bottom of the dialog that you can use to change the type of dialog. This will also set the token image button to repeat the dialog type." +
                     "<BR>" +
@@ -90,7 +103,49 @@ on('ready', () => {
                     "**Start a whisper: **<code>!dialog --id|&#64;&#123;selected|token_id&#125; --&#64;&#123;target|token_id&#125; --?{message|message}</code>" +
                     "<BR>" +
                     "<BR>" +
-                    "<code>!dialog --help</code>: displays this help box." +
+                    "More macros for languages are given under languagehelp." +
+                    closeBox;
+
+
+                const languageHelpText = openBox + `<div style = 'background-color: #000; color: #fff; line-height: 1.4em;!important'>** DIALOG ${version}**<BR>Language Help</div>` +
+                    "The language feature of Dialog is based on the fact that whispers to a shared character will be seen by all players who are listed as controllers of that character. You can create a simple NPC and name it 'Dwarvish' for example and assign controll of it to all players in the campaign who speak Dwarvish. While this is an old trick, Dialog makes it easier and more fun to manage language characters and to speak in the languages."+
+                    "<BR>" +
+                    "The language feature shares many similarities to the whisper function, but with this difference: no matter who is the speaker, the message is sent from the language character. This ensures that there will be no duplicate messages posted and that a language token image is included to identify the language. An announcement box will precede the dialog, indicating who the true speaker of the message is and what language they are speaking. Only the speaker of the language will see the message. Everyone else will only see the announcement, letting them know the speaker and the language, but not the content."+
+                    "<BR>" +
+                    "<BR>" +
+                    "**Setting up a language character and token**" +
+                    "<BR>" +
+                    "The thread for this script on the Roll20 forum contains a link to some basic SRD language token images. You can make your own or search the marketplace for appropriate images." +
+                    "<BR>" +
+                    "Any character who can see the translated message can click the 'Respond' button, or click the language token image and submit a response. They will be announced as the speaker, and the process continues." +
+                    "The proces is:"+
+                    "<ol>" +
+                    "<li>Create an NPC and give it the name of a language. At the bare minimum, it must have the GM listed as a controller, or the GM will not be able to read any language messages.</li>" +
+                    "<li>Assign a token to the language. If you wish, you can put a color value into bar 1 in standard format of *#000* or *#000000*. The language dialog box will display in this color. You must include the #.</li>" +
+                    "<li>Repeat for every language in the campaign." +
+                    "</ol>" +
+                    "<BR>" +
+                    "**Helpful Macros**" +
+                    "<BR>" +
+                    "<BR>" +
+                    "**Assign control of a language to a character** - For this it woul be helpful to create a page with all of your language tokens together. Place the player token on that page, select it and run:" +
+                    "<BR>" +
+                    "<code>!dialog --assign @{selected|character_id} @{target|character_id}</code>, following the on-screen prompt to select the target language" +
+                    "<BR>" +
+                    "<BR>" +
+                    "**Create a player language macro** - You can make a macro or token action for the player to run that will provide a drop down list of all of the languages they speak and ask them what they wish to say. Simply select all the spoken languages and run:" +
+                    "<code>!dialog --macro</code>. The chat will give you the code to copy and paste into a macro or action." +
+                    "<BR>" +
+                    "<BR>" +
+                    "**Design Consideration**s"+
+                    "<BR>" +
+                    "<ol>" +
+                    "<li>Because Common is... common to almost all characters, I have elected not to consider it a language. Use the quote macro from above to speak in Common."+
+                    "<li>I have not tested this for sheets other than the D&D 5th Edition by Roll20 Sheet, but I don't think there is any coding specific to that sheet. If you play with another sheet and run into issues, let me know."+
+                    "<li>In the case of D&D, some languages are actually the name of the race. Elves speak elvish, but Orcs speak Orc. Since the language is actually a character, it is a good idea to rename such language to something like 'Orcish' so the game does not become confused."+
+                    "<li>NPCs do not need to have languages assigned. They are gm controlled and the script realizes this. The gm can decide on an ad hoc basis if an NPC can understand and respond."+
+                    "<li>Almost all of the css that controls the appearance of the boxes, fonts and buttons is in a block of constants near the top of the script, in case anyone wants to tinker with the defaults."+
+                    "</ol>" +
                     closeBox;
 
 
@@ -216,7 +271,7 @@ on('ready', () => {
                 */
                 if (p) {
 
-                    if (msg.content !== "!dialog --help" && msg.content !== "!dialog --macro" && !msg.content.includes("!dialog --assign")) {
+                    if (msg.content !== "!dialog --help" && msg.content !== "!dialog --languagehelp" && msg.content !== "!dialog --macro" && !msg.content.includes("!dialog --assign")) {
 
                         let args = msg.content.split(" --")
 
@@ -446,7 +501,7 @@ on('ready', () => {
                                             let speakerImg = `<img src ='${(getObj('graphic', toID)).get('imgsrc')}' style = 'max-height: 25px; float: left; margin-top: -6px; margin-left: -10px !important'> `;
                                             log("speakerImg is " + speakerImg);
                                             theMessage = theMessage + " &#187;";
-                                            sendChat('Language', openLanguageAnnouncementBox + LanguageAnnouncementStyle + speakerImg + `${speakerName} speaks in ${tokenName}</div>`);
+                                            sendChat('', openLanguageAnnouncementBox + LanguageAnnouncementStyle + speakerImg + `${speakerName} speaks in ${tokenName}</div>`);
                                             sendChat(tokenName, `/w "${tokenName}"` + box + imageFormat(tokenImage, tokenID) + messageFormat(theMessage) + buttonHolder + closeBox);
                                             break;
                                         default:
@@ -487,6 +542,9 @@ on('ready', () => {
                         switch (msg.content) {
                             case "!dialog --help":
                                 sendChat('Dialog', helpText);
+                                break;
+                            case "!dialog --languagehelp":
+                                sendChat('Dialog', languageHelpText);
                                 break;
                             case "!dialog --macro":
                                 // code block
