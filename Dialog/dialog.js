@@ -1,5 +1,5 @@
 on('ready', () => {
-    const version = '0.0.5';
+    const version = '0.0.6';
     const sheetVersion = 'D&D 5th Edition by Roll20';
 
 
@@ -39,22 +39,25 @@ on('ready', () => {
                 const openWhisperBox = "<div style='margin-left:-30px; border: 0px none; margin-top: 5px; border-radius: 35px 6px 6px 6px; box-shadow: 2px 2px 4px 2px #000; background-color: #666; background-image: linear-gradient(0deg, #888, #555);min-height:60px; display: block; padding:0px 5px 0px 5px; text-align: left;  white-space: pre-wrap;'>";
                 const openoocBox = "<div style='margin-left:-30px; border: 0px none; margin-top: 5px; border-radius: 35px 6px 6px 6px; box-shadow: 2px 2px 4px 2px #000; background-color: #ffffff; min-height:60px; display: block; padding:5px 2x 0px 5px; text-align: left;  white-space: pre-wrap;'>";
                 const openEmoteBox = "<div style='margin-left:-30px; border: 0px none; margin-top: 5px; border-radius: 35px 6px 6px 6px; box-shadow: 2px 2px 4px 2px #000; background-color: #68895d; min-height:60px; display: block; padding:5px 2px 0px 5px; text-align: left;  white-space: pre-wrap;'>";
+                const openDescBox = "<div style='margin-left:-30px; border: 0px none; margin-top: 5px; border-radius: 6px 6px 6px 6px; box-shadow: 2px 2px 4px 2px #000; background-color: #ddd; min-height:60px; display: block; padding:5px 2px 0px 5px; text-align: left;  white-space: pre-wrap;'>";
                 let openLanguageBox = "<div style='margin-left:-30px; border: 0px none; margin-top: 5px; border-radius: 35px 6px 6px 6px; box-shadow: 2px 2px 4px 2px #000; background-color: " + languageBackgroundColor + "; min-height:60px; display: block; padding:5px 5px 0px 5px; text-align: left;  white-space: pre-wrap;'>";
                 const openLanguageAnnouncementBox = "<div style='margin-left:-30px; border: 0px none; margin-top: 0px; border-radius: 12px 12px 12px 12px; background-color: #000; display: block; padding:1px 3px 1px 3px; text-align: left;  white-space: pre-wrap;'>";
                 const closeBox = "</div>";
                 const openBigQuote = "<span style='color: #989867'>&#10077;</span> "
                 const closeBigQuote = "&nbsp;<span style='color: #989867; display: inline-block, margin-top:3px !important'>&#10078;</span>"
-                const quoteStyle = `<p style = 'font-size: 1.2em; line-height:1.0; font-family: serif; font-style: normal; font-weight: 700; color: #372d16; margin: 5px;'>${openBigQuote}`
-                const whisperStyle = `<p style = 'font-size: 1.2em; line-height:1.0; font-family: serif; font-style: italic; font-weight: 700; color: #f2f2f2; margin: 5px;'>`
-                const oocStyle = `<p style = 'font-size: 1.2em; line-height:1.0; font-family: serif; font-weight: 700; color: #372d16; margin: 5px;'>`
-                const emoteStyle = `<p style = 'font-size: 1.2em; line-height:1.0; font-family: serif; font-style: italic; font-weight: 700; color: #fff; margin: 5px;'>&#10095; `
-                let languageStyle = `<p style = 'font-size: 1.4em; line-height:1.0; font-family: serif; font-style: italic; font-weight: 700; color: ${languageTextColor}; margin: 5px;'>&#171; `
-                const LanguageAnnouncementStyle = `<div style = 'font-size: 1.0em; line-height:1.0; text-align: center; font-family: serif; font-style:normal; font-weight: 700; color: #fff; margin: 5px !important'>`
+                const quoteStyle = `<p style = 'font-size: 1.2em; line-height:1.0em; font-family: serif; font-style: normal; font-weight: 700; color: #372d16; margin: 5px;'>${openBigQuote}`
+                const whisperStyle = `<p style = 'font-size: 1.2em; line-height:1.0em; font-family: serif; font-style: italic; font-weight: 700; color: #f2f2f2; margin: 5px;'>`
+                const oocStyle = `<p style = 'font-size: 1.2em; line-height:1.0em; font-family: serif; font-weight: 700; color: #372d16; margin: 5px;'>`
+                const emoteStyle = `<p style = 'font-size: 1.2em; line-height:1.2em; font-family: serif; font-style: italic; font-weight: 700; color: #fff; margin: 5px;'>&#10095; `
+                const descStyle = `<p style = 'font-size: 1.0em; line-height:1.4em; font-family: Verdana, sans-serif; font-style: italic; font-weight: bold; color: #222; margin: 5px;'>`
+                let languageStyle = `<p style = 'font-size: 1.4em; line-height:1.0em; font-family: serif; font-style: italic; font-weight: 700; color: ${languageTextColor}; margin: 5px;'>&#171; `
+                const LanguageAnnouncementStyle = `<div style = 'font-size: 1.0em; line-height:1.0em; text-align: center; font-family: serif; font-style:normal; font-weight: 700; color: #fff; margin: 5px !important'>`
                 const buttonStyle = "'background-color: transparent; align:right; font-size: 0.8em; line-height:1.2; font-family: sans-serif; font-style: normal; font-weight: normal; padding: 0px;color: #ce0f69;display: inline-block;border: none; !important'";
                 const quoteButtonStyle = "<a style = 'border: 0px none; background-color: #5b4b24; width:23%; text-align: center; font-size: 0.85em; font-family: sans-serif; font-style: normal; font-weight: normal; color: #fff; line-height:1.2; margin: 0px 1px 0px 1px; padding: 0px; display: inline-block !important'";
                 const whisperButtonStyle = "<a style = 'border: 0px none; background-color: #333;    width:23%; text-align: center; font-size: 0.85em; font-family: sans-serif; font-style: normal; font-weight: normal; color: #fff; line-height:1.2; margin: 0px 1px 0px 1px; padding: 0px; display: inline-block !important'";
                 const oocButtonStyle = "<a style = 'border: 0px none; background-color: #000;    width:23%; text-align: center; font-size: 0.85em; font-family: sans-serif; font-style: normal; font-weight: normal; color: #fff; line-height:1.2; margin: 0px 1px 0px 1px; padding: 0px; display: inline-block !important'";
                 const emoteButtonStyle = "<a style = 'border: 0px none; background-color: #3a4c34; width:23%; text-align: center; font-size: 0.85em; font-family: sans-serif; font-style: normal; font-weight: normal; color: #fff; line-height:1.2; margin: 0px 1px 0px 1px; padding: 0px; display: inline-block !important'";
+                const descButtonStyle = "<a style = 'border: 0px none; background-color: #3a4c34; width:23%; text-align: center; font-size: 0.85em; font-family: sans-serif; font-style: normal; font-weight: normal; color: #fff; line-height:1.2; margin: 0px 1px 0px 1px; padding: 0px; display: inline-block !important'";
                 const languageButtonStyle = "<a style = 'border: 0px none; background-color: #000; width:95%; text-align: center; font-size: 0.85em; font-family: sans-serif; font-style: normal; font-weight: normal; color: #fff; line-height:1.2; margin: 0px 1px 0px 1px; padding: 0px; display: inline-block !important'";
                 const helpText = openBox + `<div style = 'background-color: #000; color: #fff; line-height: 1.4em;!important'>** DIALOG ${version}**</div>` +
                     "Dialog is a script that makes chat a bit more fun and easier to parse. It is token-based, either using selected and targeted tokens or specific token IDs." +
@@ -308,7 +311,7 @@ on('ready', () => {
                                     break;
 
 
-                                case arg.substring(0, 5) === "type|" && undefined !== arg.split("|")[1].match(/ooc|whisper|emote|quote|language/g):
+                                case arg.substring(0, 5) === "type|" && undefined !== arg.split("|")[1].match(/ooc|whisper|emote|desc|quote|language/g):
                                     messageType = arg.split("|")[1];
                                     break;
 
@@ -397,6 +400,7 @@ on('ready', () => {
 
 
                                     let emoteCommand = `!dialog --id|${fromID} --type|emote --?{Emote|Emote}`;
+                                    let descCommand = `!dialog --id|${fromID} --type|desc --?{Description|Description}`;
                                     let oocCommand = `!dialog --id|${fromID} --type|ooc --?{Out of Character|ooc}`;
                                     let languageCommand = "!dialog --id|" + fromID + " --to|" + HE(HE('@{selected|token_id}')) + " --type|language --?{Input Speech to translate|speech}";
                                     let whisperCommand = "!dialog --id|" + ((toID === currentGMID) ? 'gm' : toID) + " --to|" + ((fromGM) ? 'gm' : fromID) + " --?{Input Whisper|Whisper}";
@@ -471,6 +475,19 @@ on('ready', () => {
                                             repeatCode = `!dialog --id|${fromID} --type|emote --?{Input Dialog|Speech}`
                                             theMessage = tokenName + " " + theMessage
                                             break;
+                                        case "desc":
+                                            box = openDescBox;
+                                            messageStyle = descStyle
+                                            button1 = "";
+                                            button2 = "";
+                                            button3 = "";
+                                            button4 = "";
+                                            //button1 = makeButton("QUOTE", quoteCommand, descButtonStyle);
+                                            //button2 = makeButton("EMOTE", emoteCommand, descButtonStyle);
+                                            //button3 = makeButton("OOC", oocCommand, descButtonStyle);
+                                            //button4 = makeButton("DESC", descCommand, descButtonStyle);
+                                            repeatCode = `!dialog --id|${fromID} --type|desc --?{Description|Description}`
+                                            break;
                                         default:
                                             box = openQuoteBox;
                                             messageStyle = quoteStyle
@@ -495,6 +512,9 @@ on('ready', () => {
                                             log("A");
                                             sendChat(tokenName, `/w "${p.get('_displayname')}" ` + box + imageFormat(tokenImage, tokenID) + messageFormat(theMessage) + buttonHolder + closeBox);
                                             log("B");
+                                            break;
+                                        case "desc":
+                                            sendChat(tokenName, "" + box  + messageFormat(theMessage) + buttonHolder + closeBox);
                                             break;
                                         case "language":
                                             let speakerName = (getObj('graphic', toID)).get('name');
