@@ -1,5 +1,5 @@
 on('ready', () => {
-    const version = '0.0.5';
+    const version = '0.0.7';
     const sheetVersion = 'D&D 5th Edition by Roll20';
 
 
