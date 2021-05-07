@@ -8,7 +8,7 @@ Dialog is a script that makes chat a bit more fun and easier to parse. It is tok
 
 `--to|token_id`: Optional. If a recipient is specified, the dialog becomes a whisper.
 
-`--type|quote|whisper|emote|ooc`: Optional. This determines the style of the dialog box to display. If not used, the script assumes an in-character quote. Whisper doesn't actually do anything, but is included as an option for making it plain that a whisper is intended. specifying a --to|token_id automatically chooses the whisper style.
+`--type|quote|whisper|emote|ooc`: Optional. This determines the style of the dialog box to display. If not used, the script assumes an in-character quote. Whisper doesn't actually do anything, but is included as an option for making it plain that a whisper is intended. specifying a `--to|token_id` automatically chooses the whisper style.
 <BR>`--type|emote1` pulls the background color of an emote box from the token's Aura 1 color
 `--type|emote2` pulls the background color of an emote box from the token's Aura 2 color
 
