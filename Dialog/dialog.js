@@ -1,5 +1,5 @@
 on('ready', () => {
-    const version = '0.0.6';
+    const version = '0.0.5';
     const sheetVersion = 'D&D 5th Edition by Roll20';
 
 
@@ -23,6 +23,8 @@ on('ready', () => {
             let ls = [];
             let languageBackgroundColor = "#e6e6e6";
             let languageTextColor = "#000";
+            let useCustomEmoteColor = false;
+            let emoteColor = 1;
 
             let currentGM = findObjs({
                     type: 'player'
@@ -311,7 +313,7 @@ on('ready', () => {
                                     break;
 
 
-                                case arg.substring(0, 5) === "type|" && undefined !== arg.split("|")[1].match(/ooc|whisper|emote|desc|quote|language/g):
+                                case arg.substring(0, 5) === "type|" && undefined !== arg.split("|")[1].match(/ooc|whisper|emote|emote1|emote2|desc|quote|language/g):
                                     messageType = arg.split("|")[1];
                                     break;
 
@@ -328,6 +330,21 @@ on('ready', () => {
                                     messageType = "whisper"
                                 }
                             }
+                            
+                            //if emote1 or emote2 is used, change to "emote" and indicate the color to be used
+                            
+                            if (messageType === "emote1") {
+                            messageType = "emote";
+                            emoteColor=1;
+                            useCustomEmoteColor = true;
+                            }
+                            
+                            if (messageType === "emote2") {
+                            messageType = "emote";
+                            emoteColor=2;
+                            useCustomEmoteColor = true;
+                            }
+
 
                         });
                         if (fromID !== "") {
@@ -386,10 +403,11 @@ on('ready', () => {
                                     .replace(/(\)\[)+/g, "'>")
                                     .replace(/(\])+/g, "</a>")
                                     .replace(/\/n/g, "<BR>")
+                                    .replace(/\s\s/g, "<BR>")
                                     .replace(/Q{/g, '?{')
                                     .replace(/A{/g, '&#64;{');
 
-
+L({theMessage});
 
 
                                 if (t || fromGM) {
@@ -468,6 +486,16 @@ on('ready', () => {
                                         case "emote":
                                             box = openEmoteBox;
                                             messageStyle = emoteStyle
+
+                                            if (useCustomEmoteColor){
+                                            newColor =  ((emoteColor === 1) ? (getObj('graphic', tokenID)).get('aura1_color') : (getObj('graphic', tokenID)).get('aura2_color')) ;
+                                            languageTextColor = getTextColor(newColor);
+                                            L({newColor,languageTextColor});
+                                            box = "<div style='margin-left:-30px; border: 0px none; margin-top: 5px; border-radius: 35px 6px 6px 6px; box-shadow: 2px 2px 4px 2px #000; background-color: "+ newColor + "; min-height:60px; display: block; padding:5px 2px 0px 5px; text-align: left;  white-space: pre-wrap;'>";
+                                            messageStyle = `<p style = 'font-size: 1.2em; line-height:1.2em; font-family: serif; font-style: italic; font-weight: 700; color: ${languageTextColor}; margin: 5px;'>&#10095; `
+                                            L({box,messageStyle});
+                                            }
+
                                             button1 = makeButton("QUOTE", quoteCommand, emoteButtonStyle);
                                             button2 = makeButton("EMOTE", emoteCommand, emoteButtonStyle);
                                             button3 = makeButton("OOC", oocCommand, emoteButtonStyle);
@@ -509,9 +537,7 @@ on('ready', () => {
                                     switch (messageType) {
                                         case "whisper":
                                             sendChat(tokenName, `/w "${toName}"` + box + imageFormat(tokenImage, tokenID) + messageFormat(theMessage) + buttonHolder + closeBox);
-                                            log("A");
                                             sendChat(tokenName, `/w "${p.get('_displayname')}" ` + box + imageFormat(tokenImage, tokenID) + messageFormat(theMessage) + buttonHolder + closeBox);
-                                            log("B");
                                             break;
                                         case "desc":
                                             sendChat(tokenName, "" + box  + messageFormat(theMessage) + buttonHolder + closeBox);
