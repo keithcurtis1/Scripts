@@ -1,5 +1,5 @@
 on('ready', () => {
-    const version = '0.0.7';
+    const version = '0.0.5';
     const sheetVersion = 'D&D 5th Edition by Roll20';
 
 
@@ -486,21 +486,21 @@ L({theMessage});
                                         case "emote":
                                             box = openEmoteBox;
                                             messageStyle = emoteStyle
+                                            repeatCode = `!dialog --id|${fromID} --type|emote --?{Input Dialog|Speech}`
 
                                             if (useCustomEmoteColor){
                                             newColor =  ((emoteColor === 1) ? (getObj('graphic', tokenID)).get('aura1_color') : (getObj('graphic', tokenID)).get('aura2_color')) ;
                                             languageTextColor = getTextColor(newColor);
-                                            L({newColor,languageTextColor});
                                             box = "<div style='margin-left:-30px; border: 0px none; margin-top: 5px; border-radius: 35px 6px 6px 6px; box-shadow: 2px 2px 4px 2px #000; background-color: "+ newColor + "; min-height:60px; display: block; padding:5px 2px 0px 5px; text-align: left;  white-space: pre-wrap;'>";
                                             messageStyle = `<p style = 'font-size: 1.2em; line-height:1.2em; font-family: serif; font-style: italic; font-weight: 700; color: ${languageTextColor}; margin: 5px;'>&#10095; `
-                                            L({box,messageStyle});
+                                            repeatCode = `!dialog --id|${fromID} --type|emote${emoteColor} --?{Input Dialog|Emote}`
+                                            emoteCommand = `!dialog --id|${fromID} --type|emote${emoteColor} --?{Emote|Emote}`;
                                             }
 
                                             button1 = makeButton("QUOTE", quoteCommand, emoteButtonStyle);
                                             button2 = makeButton("EMOTE", emoteCommand, emoteButtonStyle);
                                             button3 = makeButton("OOC", oocCommand, emoteButtonStyle);
                                             button4 = makeButton("TO GM", whisperGMCommand, emoteButtonStyle);
-                                            repeatCode = `!dialog --id|${fromID} --type|emote --?{Input Dialog|Speech}`
                                             theMessage = tokenName + " " + theMessage
                                             break;
                                         case "desc":
