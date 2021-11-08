@@ -41,20 +41,20 @@ Examples:
 ## Pathfinder Second Edition by Roll20 Sheet
 All PF2 use requires adding the argument "pf2" to the argument list. Otherwise the script will try to create Token Actions for the 5e sheet. Until all sheets have a uniform sheet identifier attribute, this is necessary.
 You can create specific classes of abilities by using the following arguments separated by spaces:
-**pf2** Required on all PF2 commands
-**attacks** Creates a button for each attack. TAM will append a '-m' or '-r' after the name to distinguish melee from ranged
-**automatic** Creates a button for each automatic action
-**reactive**  Creates a button for each reaction
-**innate**  Creates a button for each innate ability
-**offensive**  Creates a button for each offensive ability
-**spells** Creates a button that calls up a chat menu of all spells the character can cast. These are separated by innate, focus, cantrips and normal spells
-**actions** Creates a button for each normal action
-**focus** Creates a button for each focus ability
-**ritual** Creates a button for each ritual ability
-**checks** Creates a drop down menu of all Skill check
-**saves** Creates a dropdown menu of all saving throws
-**init** Creates a button that rolls initiative for the selected token, obeying the skill chosen on the character sheet. The skill cannot be chosen without API interaction, so it will need to be manually chosen.
-**name** Normally, Token Actions are created using the character_id. They will still function even if the character is renamed. However this is not always desireable. If a character is moved to a new game via the Character Vault, it will receive a new character_id, and the token actions will not function. If you intend to move the character, use the "name" argument in the string and it will call the token actions by name.
+- **pf2** Required on all PF2 commands
+- **attacks** Creates a button for each attack. TAM will append a '-m' or '-r' after the name to distinguish melee from ranged
+- **automatic** Creates a button for each automatic action
+- **reactive**  Creates a button for each reaction
+- **innate**  Creates a button for each innate ability
+- **offensive**  Creates a button for each offensive ability
+- **spells** Creates a button that calls up a chat menu of all spells the character can cast. These are separated by innate, focus, cantrips and normal spells
+- **actions** Creates a button for each normal action
+- **focus** Creates a button for each focus ability
+- **ritual** Creates a button for each ritual ability
+- **checks** Creates a drop down menu of all Skill check
+- **saves** Creates a dropdown menu of all saving throws
+- **init** Creates a button that rolls initiative for the selected token, obeying the skill chosen on the character sheet. The skill cannot be chosen without API interaction, so it will need to be manually chosen.
+- **name** Normally, Token Actions are created using the character_id. They will still function even if the character is renamed. However this is not always desireable. If a character is moved to a new game via the Character Vault, it will receive a new character_id, and the token actions will not function. If you intend to move the character, use the "name" argument in the string and it will call the token actions by name.
 
 Examples:
 
