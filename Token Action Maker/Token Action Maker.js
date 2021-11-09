@@ -2,10 +2,10 @@ var tokenAction = tokenAction || (function () {
     'use strict';
 
     var version = '0.3.6',
-        sheetVersion = 'D&D 5th Edition by Roll20 or Pathfinder 2 by Roll20',
+        sheetVersion = 'D&D 5th Edition by Roll20',
         sheet = '5e',
         checkInstall = function () {
-            log('TokenAction v' + version + ' is ready!  Designed for use with the ' + sheetVersion + ' character sheets!');
+            log('TokenAction v' + version + ' is ready!  Designed for use with the ' + sheetVersion + ' character sheet!');
         },
 
         getRepeatingAction = (id, action, usename) => {
@@ -229,11 +229,11 @@ var tokenAction = tokenAction || (function () {
             allCantrips.forEach(a => {
                 if (a.get('name').includes('_name')) {
 
-                    allCantripsText = allCantripsText + '[' + a.get('current') + '](~selected|' + a.get('name').replace('_name', '_spellroll') + ')\n';
+                    allCantripsText = allCantripsText + '[' + a.get('current') + '](~selected|' + a.get('name').replace('_name', '_spellroll') + ') ';
                 }
             }
             )
-            if (allCantripsText) { allCantripsText = '**Cantrips**\n' + allCantripsText };
+            if (allCantripsText) { allCantripsText = '**Cantrips**\n' + allCantripsText + '\n'};
 
 
 
@@ -248,7 +248,7 @@ var tokenAction = tokenAction || (function () {
             allNormalSpells.forEach(a => {
                 if (a.get('name').includes('_name')) {
 
-                    allNormalSpellsText = allNormalSpellsText + '[' + a.get('current') + '](~selected|' + a.get('name').replace('_name', '_spellroll') + ')\n';
+                    allNormalSpellsText = allNormalSpellsText + '[' + a.get('current') + '](~selected|' + a.get('name').replace('_name', '_spellroll') + ') ';
                 }
             }
             )
@@ -258,6 +258,7 @@ var tokenAction = tokenAction || (function () {
 
             let spellChatMenu = `/w "@{selected|character_name}" &{template:rolls} {{charactername=@{selected|character_name}}} {{header=Spells}} {{desc=${allSpellInnateText}${allSpellFocusText}${allCantripsText}${allNormalSpellsText}}}`
 
+        if (allSpellInnateText || allSpellFocusText || allCantripsText|| allNormalSpellsText){
             if (checkAbility[0]) {
                 checkAbility[0].set({
                     action: spellChatMenu
@@ -270,7 +271,7 @@ var tokenAction = tokenAction || (function () {
                     istokenaction: true
                 });
             }
-
+}
 
 
         },
