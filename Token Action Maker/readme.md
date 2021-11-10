@@ -49,8 +49,6 @@ You can create specific classes of abilities by using the following arguments se
 - **offensive**  Creates a button for each offensive ability
 - **spells** Creates a button that calls up a chat menu of all spells the character can cast. These are separated by innate, focus, cantrips and normal spells
 - **actions** Creates a button for each normal action
-- **focus** Creates a button for each focus ability
-- **ritual** Creates a button for each ritual ability
 - **checks** Creates a drop down menu of all Skill check
 - **saves** Creates a dropdown menu of all saving throws
 - **init** Creates a button that rolls initiative for the selected token, obeying the skill chosen on the character sheet. The skill cannot be chosen without API interaction, so it will need to be manually chosen.
