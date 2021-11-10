@@ -391,6 +391,9 @@ var tokenAction = tokenAction || (function () {
                 if (pattern.match('bonusaction')) {
                     repeatingName = "b-" + abbreviateName(attr.get('current').replace(/\.\s*$/, ""));
                 }
+                if (pattern.match('free-actions-reactions_')) {
+                    repeatingName = "r-" + abbreviateName(attr.get('current').replace(/\.\s*$/, ""));
+                }
                 var checkAbility = findObjs({
                     _type: 'ability',
                     _characterid: id,
@@ -419,6 +422,7 @@ var tokenAction = tokenAction || (function () {
             var args = msg.content.split(" ");
             const usename = args.includes('name') ? true : false;
             sheet = ((args.includes('pf2')) ? 'pf2' : '5e');
+            log('sheet is ' + sheet);
 
             if (msg.content.search(/^(!ta|!sortta)\b/) !== -1) {
                 let baseCommand = args[0];
@@ -444,12 +448,12 @@ var tokenAction = tokenAction || (function () {
                         args = [baseCommand, 'pf2', 'name', 'attacks', 'automatic', 'reactive', 'innate', 'offensive', 'spells', 'actions', 'focus', 'ritual', 'checks', 'saves', 'init'];
                     }
                     if (args.length === 2) {
-                        args = [baseCommand, 'pf2', 'attacks', 'automatic', 'reactive', 'innate', 'offensive', 'spells', 'actions', 'focus', 'ritual', 'checks', 'saves', 'init'];
+                        args = [baseCommand, 'pf2', 'attacks', 'automatic', 'reactive', 'interaction', 'innate', 'offensive', 'spells', 'actions', 'focus', 'ritual', 'checks', 'saves', 'init'];
                     }
                     if (args.length === 3 && args.includes('name')) {
-                        args = [baseCommand, 'pf2', 'name', 'attacks', 'automatic', 'reactive', 'innate', 'offensive', 'spells', 'actions', 'focus', 'ritual', 'checks', 'saves', 'init'];
+                        args = [baseCommand, 'pf2', 'name', 'attacks', 'automatic', 'reactive', 'interaction', 'innate', 'offensive', 'spells', 'actions', 'focus', 'ritual', 'checks', 'saves', 'init'];
                     }
-//                    log('args = ' + args);
+                    log('args = ' + args);
                 }
 
 
@@ -479,7 +483,7 @@ var tokenAction = tokenAction || (function () {
                 // ############PUT Switch for 5e here
                 if (sheet === "5e") {
                     _.each(char, function (a) {
-                        if (parseInt(isNpc(a.id)) === 1) {
+                        if (parseInt(isNpc(a.id)) === 1) {//5e NPC
                             if (args.includes("init")) {
                                 createAbility('Init', "%{" + a.id + "|npc_init}", a.id);
                             }
@@ -511,7 +515,7 @@ var tokenAction = tokenAction || (function () {
                                 createSpell(a.id);
                             }
                         } else {
-                            if (args.includes("init")) {
+                            if (args.includes("init")) {//5e PC
                                 const name = usename ? getObj('character', a.id).get('name') : a.id;
                                 createAbility('Init', "%{" + name + "|initiative}", a.id);
                             }
@@ -531,15 +535,17 @@ var tokenAction = tokenAction || (function () {
                                 createSpell(a.id);
                             }
                         }
-                        sendChat("TokenAction", "/w " + msg.who + " Created Token Actions for " + a.get('name') + ".");
+                        sendChat("TokenAction", "/w " + msg.who + " Created 5e Token Actions for " + a.get('name') + ".");
                     });
 
 
                 } else {
 
 
-                    _.each(char, function (a) {
-                        if (parseInt(isNpc(a.id)) === 1) {//PF2 version
+                    _.each(char, function (a) {//PF2 NPC
+                        if (parseInt(isNpc(a.id)) === 1) {//PF2 NPC
+//                            log('These are the commands that are being read : PF2 NPC');
+
                             if (args.includes("init")) {
                                 createAbility('Init', "%{" + a.id + "|NPC_INITIATIVE}", a.id);
                             }
@@ -549,24 +555,25 @@ var tokenAction = tokenAction || (function () {
                             if (args.includes("saves")) {//PF2 version
                                 createAbility('Save', "@{selected|whispertype} &{template:rolls} {{limit_height=@{selected|roll_limit_height}}} {{charactername=@{selected|character_name}}} {{subheader=^{saving_throw}}} {{roll01_type=saving-throw}} {{notes_show=@{selected|roll_show_notes}}} {{notes=@{selected|saving_throws_notes}}} ?{Save|Fortitude,{{roll01=[[1d20cs20cf1 + (@{selected|saving_throws_fortitude})[@{selected|text_modifier}] + (@{selected|query_roll_bonus})[@{selected|text_bonus}]]]&#125;&#125; {{header=fortitude&#125;&#125;|Reflex,{{roll01=[[1d20cs20cf1 + (@{selected|saving_throws_reflex})[@{selected|text_modifier}] + (@{selected|query_roll_bonus})[@{selected|text_bonus}]]]&#125;&#125;{{header=reflex&#125;&#125;|Will,{{roll01=[[1d20cs20cf1 + (@{selected|saving_throws_will})[@{selected|text_modifier}] + (@{selected|query_roll_bonus})[@{selected|text_bonus}]]]&#125;&#125; {{header=will&#125;&#125;}", a.id);
                             }
-                            if (args.includes("attacks")) {
+                            if (args.includes("attacks")) {//PF2
                                 createRepeating(/repeating_ranged-strikes_[^_]+_weapon\b/, 'repeating_ranged-strikes_%%RID%%_ATTACK-DAMAGE-NPC', a.id, usename);
                                 createRepeating(/repeating_melee-strikes_[^_]+_weapon\b/, 'repeating_melee-strikes_%%RID%%_ATTACK-DAMAGE-NPC', a.id, usename);
                             }
                             if (args.includes("offensive")) {//PF2 version
                                 createRepeating(/repeating_actions-activities_[^_]+_name\b/, 'repeating_actions-activities_%%RID%%_action-npc', a.id, usename);
                             }
-                            if (args.includes("bonusactions")) {
-                                createRepeating(/repeating_npcbonusaction_[^_]+_name\b/, 'repeating_npcbonusaction_%%RID%%_npc_action', a.id, usename);
-                            }
-                            if (args.includes("traits")) {
-                                createRepeating(/repeating_npctrait_[^_]+_name\b/, 'repeating_npctrait_%%RID%%_npc_roll_output', a.id, usename);
-                            }
+                        if (args.includes("reactive")) {
+                            createRepeating(/repeating_free-actions-reactions_[^_]+_name\b/, 'repeating_free-actions-reactions_%%RID%%_action-npc', a.id, usename);
+                        }
+                        if (args.includes("interaction")) {
+                            createRepeating(/repeating_interaction-abilities_[^_]+_name\b/, 'repeating_interaction-abilities_%%RID%%_action-npc', a.id, usename);
+                        }
                             if (args.includes("spells")) {
                                 createPF2Spell(a.id);
                             }
-                        } else {//PF2 commands are read from here.
-                            if (args.includes("init")) {
+                        } else {
+//                            log('These are the commands that are being read :PF2 PC');
+                            if (args.includes("init")) {//PF2 PC
                                 const name = usename ? getObj('character', a.id).get('name') : a.id;
                                 createAbility('Init', "%{" + name + "|initiative}", a.id);
                             }
@@ -585,14 +592,14 @@ var tokenAction = tokenAction || (function () {
                             if (args.includes("actions")) {
                                 createRepeating(/repeating_actions_[^_]+_name\b/, 'repeating_actions_%%RID%%_action', a.id, usename);
                             }
-                            if (args.includes("traits")) {
-                                createRepeating(/repeating_traits_[^_]+_name\b/, 'repeating_traits_%%RID%%_output', a.id, usename);
-                            }
+//                            if (args.includes("traits")) {
+//                                createRepeating(/repeating_traits_[^_]+_name\b/, 'repeating_traits_%%RID%%_output', a.id, usename);
+//                            }
                             if (args.includes("spells")) {
                                 createPF2Spell(a.id);
                             }
                         }
-                        sendChat("TokenAction", "/w " + msg.who + " Created Token Actions for " + a.get('name') + ".");
+                        sendChat("TokenAction", "/w " + msg.who + " Created PF2 Token Actions for " + a.get('name') + ".");
                     });
                 }
             } else if (msg.content.search(/^!deleteta\b/) !== -1) {
@@ -613,9 +620,53 @@ var tokenAction = tokenAction || (function () {
 
                 char = _.uniq(getSelectedCharacters(msg.selected));
 
-                _.each(char, function (a) {
+
+
+
+
+if (sheet === "5e") {
                     // ############PUT Switch for 5e here
-                    if (parseInt(isNpc(a.id)) === 1) {//PF2 Sort repeating read from here
+
+                
+                                _.each(char, function(a) {
+                    if (parseInt(isNpc(a.id)) === 1) {//5e PC Sorted
+                        if (args.includes("init")) {
+                            createAbility('Init', "%{" + a.id + "|npc_init}", a.id);
+                        }
+                        if (args.includes("checks")) {
+                            createAbility('Check', "@{selected|wtype}&{template:npc} @{selected|npc_name_flag} @{selected|rtype}+?{Ability|Acrobatics,[[@{selected|npc_acrobatics}]]]]&" + "#125;&" + "#125; {{r1=[[@{selected|d20}+[[@{selected|npc_acrobatics}]]]]&" + "#125;&" + "#125; {{mod=[[[[@{selected|npc_acrobatics}]]]]&" + "#125;&" + "#125; {{rname=Acrobatics&" + "#125;&" + "#125; {{type=Skill&" + "#125;&" + "#125; |Animal Handling,[[@{selected|npc_animal_handling}]]]]&" + "#125;&" + "#125; {{r1=[[@{selected|d20}+[[@{selected|npc_animal_handling}]]]]&" + "#125;&" + "#125; {{mod=[[[[@{selected|npc_animal_handling}]]]]&" + "#125;&" + "#125; {{rname=Animal Handling&" + "#125;&" + "#125; {{type=Skill&" + "#125;&" + "#125; |Arcana,[[@{selected|npc_arcana}]]]]&" + "#125;&" + "#125; {{r1=[[@{selected|d20}+[[@{selected|npc_arcana}]]]]&" + "#125;&" + "#125; {{mod=[[[[@{selected|npc_arcana}]]]]&" + "#125;&" + "#125; {{rname=Arcana&" + "#125;&" + "#125; {{type=Skill&" + "#125;&" + "#125; |Athletics,[[@{selected|npc_athletics}]]]]&" + "#125;&" + "#125; {{r1=[[@{selected|d20}+[[@{selected|npc_athletics}]]]]&" + "#125;&" + "#125; {{mod=[[[[@{selected|npc_athletics}]]]]&" + "#125;&" + "#125; {{rname=Athletics&" + "#125;&" + "#125; {{type=Skill&" + "#125;&" + "#125; |Deception,[[@{selected|npc_deception}]]]]&" + "#125;&" + "#125; {{r1=[[@{selected|d20}+[[@{selected|npc_deception}]]]]&" + "#125;&" + "#125; {{mod=[[[[@{selected|npc_deception}]]]]&" + "#125;&" + "#125; {{rname=Deception&" + "#125;&" + "#125; {{type=Skill&" + "#125;&" + "#125; |History,[[@{selected|npc_history}]]]]&" + "#125;&" + "#125; {{r1=[[@{selected|d20}+[[@{selected|npc_history}]]]]&" + "#125;&" + "#125; {{mod=[[[[@{selected|npc_history}]]]]&" + "#125;&" + "#125; {{rname=History&" + "#125;&" + "#125; {{type=Skill&" + "#125;&" + "#125; |Insight,[[@{selected|npc_insight}]]]]&" + "#125;&" + "#125; {{r1=[[@{selected|d20}+[[@{selected|npc_insight}]]]]&" + "#125;&" + "#125; {{mod=[[[[@{selected|npc_insight}]]]]&" + "#125;&" + "#125; {{rname=Insight&" + "#125;&" + "#125; {{type=Skill&" + "#125;&" + "#125; |Intimidation,[[@{selected|npc_intimidation}]]]]&" + "#125;&" + "#125; {{r1=[[@{selected|d20}+[[@{selected|npc_intimidation}]]]]&" + "#125;&" + "#125; {{mod=[[[[@{selected|npc_intimidation}]]]]&" + "#125;&" + "#125; {{rname=Intimidation&" + "#125;&" + "#125; {{type=Skill&" + "#125;&" + "#125; |Investigation,[[@{selected|npc_investigation}]]]]&" + "#125;&" + "#125; {{r1=[[@{selected|d20}+[[@{selected|npc_investigation}]]]]&" + "#125;&" + "#125; {{mod=[[[[@{selected|npc_investigation}]]]]&" + "#125;&" + "#125; {{rname=Investigation&" + "#125;&" + "#125; {{type=Skill&" + "#125;&" + "#125; |Medicine,[[@{selected|npc_medicine}]]]]&" + "#125;&" + "#125; {{r1=[[@{selected|d20}+[[@{selected|npc_medicine}]]]]&" + "#125;&" + "#125; {{mod=[[[[@{selected|npc_medicine}]]]]&" + "#125;&" + "#125; {{rname=Medicine&" + "#125;&" + "#125; {{type=Skill&" + "#125;&" + "#125; |Nature,[[@{selected|npc_nature}]]]]&" + "#125;&" + "#125; {{r1=[[@{selected|d20}+[[@{selected|npc_nature}]]]]&" + "#125;&" + "#125; {{mod=[[[[@{selected|npc_nature}]]]]&" + "#125;&" + "#125; {{rname=Nature&" + "#125;&" + "#125; {{type=Skill&" + "#125;&" + "#125; |Perception,[[@{selected|npc_perception}]]]]&" + "#125;&" + "#125; {{r1=[[@{selected|d20}+[[@{selected|npc_perception}]]]]&" + "#125;&" + "#125; {{mod=[[[[@{selected|npc_perception}]]]]&" + "#125;&" + "#125; {{rname=Perception&" + "#125;&" + "#125; {{type=Skill&" + "#125;&" + "#125; |Performance,[[@{selected|npc_performance}]]]]&" + "#125;&" + "#125; {{r1=[[@{selected|d20}+[[@{selected|npc_performance}]]]]&" + "#125;&" + "#125; {{mod=[[[[@{selected|npc_performance}]]]]&" + "#125;&" + "#125; {{rname=Performance&" + "#125;&" + "#125; {{type=Skill&" + "#125;&" + "#125; |Persuasion,[[@{selected|npc_persuasion}]]]]&" + "#125;&" + "#125; {{r1=[[@{selected|d20}+[[@{selected|npc_persuasion}]]]]&" + "#125;&" + "#125; {{mod=[[[[@{selected|npc_persuasion}]]]]&" + "#125;&" + "#125; {{rname=Persuasion&" + "#125;&" + "#125; {{type=Skill&" + "#125;&" + "#125; |Religion,[[@{selected|npc_religion}]]]]&" + "#125;&" + "#125; {{r1=[[@{selected|d20}+[[@{selected|npc_religion}]]]]&" + "#125;&" + "#125; {{mod=[[[[@{selected|npc_religion}]]]]&" + "#125;&" + "#125; {{rname=Religion&" + "#125;&" + "#125; {{type=Skill&" + "#125;&" + "#125; |Sleight of Hand,[[@{selected|npc_sleight_of_hand}]]]]&" + "#125;&" + "#125; {{r1=[[@{selected|d20}+[[@{selected|npc_sleight_of_hand}]]]]&" + "#125;&" + "#125; {{mod=[[[[@{selected|npc_sleight_of_hand}]]]]&" + "#125;&" + "#125; {{rname=Sleight of Hand&" + "#125;&" + "#125; {{type=Skill&" + "#125;&" + "#125; |Stealth,[[@{selected|npc_stealth}]]]]&" + "#125;&" + "#125; {{r1=[[@{selected|d20}+[[@{selected|npc_stealth}]]]]&" + "#125;&" + "#125; {{mod=[[[[@{selected|npc_stealth}]]]]&" + "#125;&" + "#125; {{rname=Stealth&" + "#125;&" + "#125; {{type=Skill&" + "#125;&" + "#125; |Survival,[[@{selected|npc_survival}]]]]&" + "#125;&" + "#125; {{r1=[[@{selected|d20}+[[@{selected|npc_survival}]]]]&" + "#125;&" + "#125; {{mod=[[[[@{selected|npc_survival}]]]]&" + "#125;&" + "#125; {{rname=Survival&" + "#125;&" + "#125; {{type=Skill&" + "#125;&" + "#125; |Strength,[[@{selected|strength_mod}]][STR]]]&" + "#125;&" + "#125; {{rname=Strength&" + "#125;&" + "#125; {{mod=[[[[@{selected|strength_mod}]][STR]]]&" + "#125;&" + "#125; {{r1=[[@{selected|d20}+[[@{selected|strength_mod}]][STR]]]&" + "#125;&" + "#125; {{type=Ability&" + "#125;&" + "#125; |Dexterity,[[@{selected|dexterity_mod}]][DEX]]]&" + "#125;&" + "#125; {{rname=Dexterity&" + "#125;&" + "#125; {{mod=[[[[@{selected|dexterity_mod}]][DEX]]]&" + "#125;&" + "#125; {{r1=[[@{selected|d20}+[[@{selected|dexterity_mod}]][DEX]]]&" + "#125;&" + "#125; {{type=Ability&" + "#125;&" + "#125; |Constitution,[[@{selected|constitution_mod}]][CON]]]&" + "#125;&" + "#125; {{rname=Constitution&" + "#125;&" + "#125; {{mod=[[[[@{selected|constitution_mod}]][CON]]]&" + "#125;&" + "#125; {{r1=[[@{selected|d20}+[[@{selected|constitution_mod}]][CON]]]&" + "#125;&" + "#125; {{type=Ability&" + "#125;&" + "#125; |Intelligence,[[@{selected|intelligence_mod}]][INT]]]&" + "#125;&" + "#125; {{rname=Intelligence&" + "#125;&" + "#125; {{mod=[[[[@{selected|intelligence_mod}]][INT]]]&" + "#125;&" + "#125; {{r1=[[@{selected|d20}+[[@{selected|intelligence_mod}]][INT]]]&" + "#125;&" + "#125; {{type=Ability&" + "#125;&" + "#125; |Wisdom,[[@{selected|wisdom_mod}]][WIS]]]&" + "#125;&" + "#125; {{rname=Wisdom&" + "#125;&" + "#125; {{mod=[[[[@{selected|wisdom_mod}]][WIS]]]&" + "#125;&" + "#125; {{r1=[[@{selected|d20}+[[@{selected|wisdom_mod}]][WIS]]]&" + "#125;&" + "#125; {{type=Ability&" + "#125;&" + "#125; |Charisma,[[@{selected|charisma_mod}]][CHA]]]&" + "#125;&" + "#125; {{rname=Charisma&" + "#125;&" + "#125; {{mod=[[[[@{selected|charisma_mod}]][CHA]]]&" + "#125;&" + "#125; {{r1=[[@{selected|d20}+[[@{selected|charisma_mod}]][CHA]]]&" + "#125;&" + "#125; {{type=Ability&" + "#125;&" + "#125;}", a.id);
+                        }
+                        if (args.includes("saves")) {
+                            createAbility('Save', "@{selected|wtype}&{template:npc} @{selected|npc_name_flag} @{selected|rtype}+?{Save|Strength,[[@{selected|npc_str_save}]]]]&" + "#125;&" + "#125; {{r1=[[@{selected|d20}+[[@{selected|npc_str_save}]]]]&" + "#125;&" + "#125; {{mod=[[@{selected|npc_str_save}]]&" + "#125;&" + "#125;{{rname=Strength Save&" + "#125;&" + "#125; {{type=Save&" + "#125;&" + "#125; |Dexterity,[[@{selected|npc_dex_save}]]]]&" + "#125;&" + "#125; {{r1=[[@{selected|d20}+[[@{selected|npc_dex_save}]]]]&" + "#125;&" + "#125; {{mod=[[@{selected|npc_dex_save}]]&" + "#125;&" + "#125;{{rname=Dexterity Save&" + "#125;&" + "#125; {{type=Save&" + "#125;&" + "#125; |Constitution,[[@{selected|npc_con_save}]]]]&" + "#125;&" + "#125; {{r1=[[@{selected|d20}+[[@{selected|npc_con_save}]]]]&" + "#125;&" + "#125; {{mod=[[@{selected|npc_con_save}]]&" + "#125;&" + "#125;{{rname=Constitution Save&" + "#125;&" + "#125; {{type=Save&" + "#125;&" + "#125; |Intelligence,[[@{selected|npc_int_save}]]]]&" + "#125;&" + "#125; {{r1=[[@{selected|d20}+[[@{selected|npc_int_save}]]]]&" + "#125;&" + "#125; {{mod=[[@{selected|npc_int_save}]]&" + "#125;&" + "#125;{{rname=Intelligence Save&" + "#125;&" + "#125; {{type=Save&" + "#125;&" + "#125; |Wisdom,[[@{selected|npc_wis_save}]]]]&" + "#125;&" + "#125; {{r1=[[@{selected|d20}+[[@{selected|npc_wis_save}]]]]&" + "#125;&" + "#125; {{mod=[[@{selected|npc_wis_save}]]&" + "#125;&" + "#125;{{rname=Wisdom Save&" + "#125;&" + "#125; {{type=Save&" + "#125;&" + "#125; |Charisma,[[@{selected|npc_cha_save}]]]]&" + "#125;&" + "#125; {{r1=[[@{selected|d20}+[[@{selected|npc_cha_save}]]]]&" + "#125;&" + "#125; {{mod=[[@{selected|npc_cha_save}]]&" + "#125;&" + "#125;{{rname=Charisma Save&" + "#125;&" + "#125; {{type=Save&" + "#125;&" + "#125;}", a.id);
+                        }
+                        if (args.includes("traits")) {
+                            createRepeating(/repeating_npctrait_[^_]+_name\b/, 'repeating_npctrait_%%RID%%_npc_roll_output', a.id, usename);
+                        }
+                        if (args.includes("reactions")) {
+                            createRepeating(/repeating_npcreaction_[^_]+_name\b/, 'repeating_npcreaction_%%RID%%_npc_roll_output', a.id, usename);
+                        }
+                        if (args.includes("spells")) {
+                            createSpell(a.id);
+                        }
+                        if (args.includes("attacks")) {
+                            sortRepeating(/repeating_npcaction_[^_]+_name\b/, 'repeating_npcaction_%%RID%%_npc_action', a.id, usename);
+                        }
+                        if (args.includes("attacks")) {
+                            sortRepeating(/repeating_npcaction-l_[^_]+_name\b/, 'repeating_npcaction-l_%%RID%%_npc_action', a.id, usename);
+                        }
+                         if (args.includes("bonusactions")) {
+                            sortRepeating(/repeating_npcbonusaction_[^_]+_name\b/, 'repeating_npcbonusaction_%%RID%%_npc_roll_output', a.id, usename);
+                        }
+                    }
+                    sendChat("TokenAction", "/w " + msg.who + " Created Sorted 5e Token Actions for " + a.get('name') + ".");
+                });
+                
+                
+            }else{
+                                 _.each(char, function (a) {
+
+                
+                                    if (parseInt(isNpc(a.id)) === 1) {//PF2 Sorted
                         if (args.includes("init")) {
                             createAbility('Init', "%{" + a.id + "|npc_init}", a.id);
                         }
@@ -631,9 +682,9 @@ var tokenAction = tokenAction || (function () {
                         if (args.includes("reactions")) {
                             createRepeating(/repeating_actions-activities_[^_]+_name\b/, 'repeating_actions-activities_%%RID%%_action-npc', a.id, usename);
                         }
-                        if (args.includes("spells")) {
-                            createSpell(a.id);
-                        }
+                            if (args.includes("spells")) {//PF2
+                                createPF2Spell(a.id);
+                            }
                         if (args.includes("attacks")) {//PF2
                             sortRepeating(/repeating_melee-strikes_[^_]+_weapon\b/, 'repeating_melee-strikes_%%RID%%_ATTACK-DAMAGE-NPC', a.id, usename);
                             sortRepeating(/repeating_ranged-strikes_[^_]+_weapon\b/, 'repeating_ranged-strikes_%%RID%%_ATTACK-DAMAGE-NPC', a.id, usename);
@@ -641,12 +692,18 @@ var tokenAction = tokenAction || (function () {
                         if (args.includes("offensive")) {//PF2
                             createRepeating(/repeating_actions-activities_[^_]+_name\b/, 'repeating_actions-activities_%%RID%%_action-npc', a.id, usename);
                         }
-                        if (args.includes("bonusactions")) {
-                            sortRepeating(/repeating_npcbonusaction_[^_]+_name\b/, 'repeating_npcbonusaction_%%RID%%_npc_roll_output', a.id, usename);
+                        if (args.includes("reactive")) {
+                            sortRepeating(/repeating_free-actions-reactions_[^_]+_name\b/, 'repeating_free-actions-reactions_%%RID%%_action-npc', a.id, usename);
+                        }
+                        if (args.includes("interaction")) {
+                            createRepeating(/repeating_interaction-abilities_[^_]+_name\b/, 'repeating_interaction-abilities_%%RID%%_action-npc', a.id, usename);
                         }
                     }
-                    sendChat("TokenAction", "/w " + msg.who + " Created Sorted Token Actions for " + a.get('name') + ".");
+                    sendChat("TokenAction", "/w " + msg.who + " Created Sorted PF2 Token Actions for " + a.get('name') + ".");
                 });
+                
+            }
+                
             }
             return;
         },
