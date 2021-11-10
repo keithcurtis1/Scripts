@@ -422,7 +422,7 @@ var tokenAction = tokenAction || (function () {
             var args = msg.content.split(" ");
             const usename = args.includes('name') ? true : false;
             sheet = ((args.includes('pf2')) ? 'pf2' : '5e');
-            log('sheet is ' + sheet);
+            //log('sheet is ' + sheet);
 
             if (msg.content.search(/^(!ta|!sortta)\b/) !== -1) {
                 let baseCommand = args[0];
@@ -453,7 +453,7 @@ var tokenAction = tokenAction || (function () {
                     if (args.length === 3 && args.includes('name')) {
                         args = [baseCommand, 'pf2', 'name', 'attacks', 'automatic', 'reactive', 'interaction', 'innate', 'offensive', 'spells', 'actions', 'focus', 'ritual', 'checks', 'saves', 'init'];
                     }
-                    log('args = ' + args);
+                    //log('args = ' + args);
                 }
 
 
