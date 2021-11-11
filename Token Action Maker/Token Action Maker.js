@@ -118,7 +118,7 @@ var tokenAction = tokenAction || (function () {
                     repeatingName = ((pattern.includes('npcaction-m')) ? 'm-' + repeatingName : repeatingName),
                     repeatingName = titleCase(repeatingName),
                     //repeatingName = (sheet === 'pf2' && pattern.includes('repeating_melee-strikes')) ?repeatingName + '-m': repeatingName,
-                    repeatingName = (sheet === 'pf2' && pattern.includes('repeating_ranged-strikes')) ?repeatingName + '-r': repeatingName,
+                    repeatingName = (sheet === 'pf2' && pattern.includes('repeating_ranged-strikes')) ?repeatingName + '-R': repeatingName,
                     
                     repeatingAction = getRepeatingAction(id, pattern.replace(/%%RID%%/g, repeatingId), usename),
 
@@ -143,13 +143,13 @@ var tokenAction = tokenAction || (function () {
 
                     if (sheet === 'pf2' && repeatingAction.includes('ATTACK-DAMAGE-NPC')) {
                         createObj("ability", {
-                            name: getFirstCharacters(repeatingName) + ((repeatingName.includes('-r')) ? '-r2':'2'),
+                            name: getFirstCharacters(repeatingName) + ((repeatingName.includes('-R')) ? '-R2':'2'),
                             action: repeatingAction.replace('ATTACK-DAMAGE-NPC', 'ATTACK-DAMAGE-NPC2'),
                             characterid: id,
                             istokenaction: true
                         });
                         createObj("ability", {
-                            name: getFirstCharacters(repeatingName) + ((repeatingName.includes('-r')) ? '-r3':'3'),
+                            name: getFirstCharacters(repeatingName) + ((repeatingName.includes('-R')) ? '-R3':'3'),
                             action: repeatingAction.replace('ATTACK-DAMAGE-NPC', 'ATTACK-DAMAGE-NPC3'),
                             characterid: id,
                             istokenaction: true
@@ -595,8 +595,8 @@ var tokenAction = tokenAction || (function () {
                                 createAbility('Save', "@{selected|whispertype} &{template:rolls} {{limit_height=@{selected|roll_limit_height}}} {{charactername=@{selected|character_name}}} {{subheader=^{saving_throw}}} {{roll01_type=saving-throw}} {{notes_show=@{selected|roll_show_notes}}} {{notes=@{selected|saving_throws_notes}}} ?{Save|Fortitude,{{roll01=[[1d20cs20cf1 + (@{selected|saving_throws_fortitude})[@{selected|text_modifier}] + (@{selected|query_roll_bonus})[@{selected|text_bonus}]]]&#125;&#125; {{header=fortitude&#125;&#125;|Reflex,{{roll01=[[1d20cs20cf1 + (@{selected|saving_throws_reflex})[@{selected|text_modifier}] + (@{selected|query_roll_bonus})[@{selected|text_bonus}]]]&#125;&#125;{{header=reflex&#125;&#125;|Will,{{roll01=[[1d20cs20cf1 + (@{selected|saving_throws_will})[@{selected|text_modifier}] + (@{selected|query_roll_bonus})[@{selected|text_bonus}]]]&#125;&#125; {{header=will&#125;&#125;}", a.id);
                             }
                             if (args.includes("attacks")) {//PF2
-                                createRepeating(/repeating_ranged-strikes_[^_]+_weapon\b/, 'repeating_ranged-strikes_%%RID%%_ATTACK-DAMAGE-NPC', a.id, usename);
                                 createRepeating(/repeating_melee-strikes_[^_]+_weapon\b/, 'repeating_melee-strikes_%%RID%%_ATTACK-DAMAGE-NPC', a.id, usename);
+                                createRepeating(/repeating_ranged-strikes_[^_]+_weapon\b/, 'repeating_ranged-strikes_%%RID%%_ATTACK-DAMAGE-NPC', a.id, usename);
                             }
                             if (args.includes("offensive")) {//PF2 version
                                 createRepeating(/repeating_actions-activities_[^_]+_name\b/, 'repeating_actions-activities_%%RID%%_action-npc', a.id, usename);
