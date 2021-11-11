@@ -62,9 +62,9 @@ var tokenAction = tokenAction || (function () {
         getFirstCharacters = function (str) {
             let result = [];
 
-            str.split(' ').map(word => word.charAt(0) != '' ? result.push(word.charAt(0)) : '');
+            str.split(' ').map(word => word.charAt(0) != '' ? result.push(word.charAt(0))+result.push(word.charAt(1)) : '');
             let abbreviation = result.join('');
-            if (str.includes('+1')){abbreviation = abbreviation.replace('+','+1')};
+            //if (str.includes('+1')){abbreviation = abbreviation.replace('+','+1')};
             return abbreviation;
         },
 
