@@ -1,5 +1,4 @@
-*By keithcurtis, based on original code by kevin*
-*with assitance and additions by GiGs & bretmckee*
+*By keithcurtis, based on original code by kevin, with assitance and additions by GiGs & bretmckee*
 
 This script creates token actions on selected tokens for the D&D 5e by Roll20 sheet. Tokens must represent character sheets, either PC or NPC.
 
