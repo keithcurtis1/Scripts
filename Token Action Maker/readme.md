@@ -23,14 +23,14 @@ This script creates token actions on selected tokens for the D&D 5e by Roll20 sh
 ## D&D 5th Edition by Roll20 Sheet
 You can create specific classes of abilities by using the following arguments separated by spaces:
 - **attacks** Creates a button for each attack. In the case of NPCs, this includes all Actions. (PC/NPC)
-- **trait**s Creates a button for each trait. PCs can have quite a number of these, so it is not recommended to run this command on PCs. (PC/NPC)
+- **trait**s Creates a button for each trait. PCs can have quite a number of these, so it is not recommended to run this command on PCs. (PC*/NPC)
 - **pc** creates full suite of buttons for everything but traits. Although this will also work on npcs, the intent is to not include trait buttons for pcs, which can get rather numerous. 
-- **bonusactions** Creates a button for each bonus action. This will be ignored on PCs since only NPC sheets have a repeating attribute for bonus actions.
-- **reactions** Creates a button for each reaction. This will be ignored on PCs since only NPC sheets have a repeating attribute for reactions.
-- **spells** Creates a button that calls up a chat menu of all spells the character can cast.
-- **checks** Creates a drop down menu of all Ability and Skill (Ability) checks
-- **saves** Creates a dropdown menu of all saving throws
-- **init** Creates a button that rolls initiative for the selected token
+- **bonusactions** Creates a button for each bonus action. This will be ignored on PCs since only NPC sheets have a repeating attribute for bonus actions. (NPC)
+- **reactions** Creates a button for each reaction. This will be ignored on PCs since only NPC sheets have a repeating attribute for reactions. (PC)
+- **spells** Creates a button that calls up a chat menu of all spells the character can cast. (PC/NPC)
+- **checks** Creates a drop down menu of all Ability and Skill (Ability) checks. Recommended for NPCs, as PC checks and Saves can be affected by many different abilities as levels progress, that this script cannot account for. (PC*/NPC)
+- **saves** Creates a dropdown menu of all saving throws. Recommended for NPCs, as PC checks and Saves can be affected by many different abilities as levels progress, that this script cannot account for. (PC*/NPC)
+- **init** Creates a button that rolls initiative for the selected token (PC/NPC)
 - **name** Normally, Token Actions are created using the character_id. They will still function even if the character is renamed. However this is not always desireable. If a character is moved to a new game via the Character Vault, it will receive a new character_id, and the token actions will not function. If you intend to move the character, use the "name" argument in the string and it will call the token actions by name.
 - **help** Calls up this help documentation
 
