@@ -41,7 +41,7 @@ Examples:
 **!ta name** will create alltoken ability buttons and identify them by name, rather than character_id.
 
 ## Pathfinder Second Edition by Roll20 Sheet
-All PF2 use requires adding the argument "pf2" to the argument list. Otherwise the script will try to create Token Actions for the 5e sheet. Until all sheets have a uniform sheet identifier attribute, this is necessary.
+All PF2 use requires adding the argument "pf2" to the argument list. Otherwise the script will try to create Token Actions for the 5e sheet. Until all sheets have a uniform sheet identifier attribute, this is necessary. In cases where there is an action cost, it will be indicated in the button name as `Action<#>`.
 You can create specific classes of abilities by using the following arguments separated by spaces:
 - **pf2** *Required on all PF2 commands*
 - **attacks** Creates a button for each attack. TAM will append a '-M' or '-R' after the name to distinguish melee from ranged. Each Attack will have a two buttons immediately following for Attack 2 and Attack 3. These will be abbreviated using the first two characters from each word in the Attack. Example `Silver Dagger` `SiDa-2` `SiDa-3` (PC/NPC)
