@@ -1,6 +1,5 @@
-*By keithcurtis, based on original code by kevin*
-
-*with assitance and additions by GiGs & bretmckee*
+*By keithcurtis, based on original code by kevin*<BR>
+* with assitance and additions by GiGs & bretmckee*
 
 This script creates token actions on selected tokens for the D&D 5e by Roll20 sheet. Tokens must represent character sheets, either PC or NPC.
 
@@ -24,8 +23,8 @@ This script creates token actions on selected tokens for the D&D 5e by Roll20 sh
 
 ## D&D 5th Edition by Roll20 Sheet
 You can create specific classes of abilities by using the following arguments separated by spaces:
-- **attacks** Creates a button for each attack. In the case of NPCs, this includes all Actions.
-- **trait**s Creates a button for each trait. PCs can have quite a number of these, so it is not recommended to run this command on PCs.
+- **attacks** Creates a button for each attack. In the case of NPCs, this includes all Actions. (PC/NPC)
+- **trait**s Creates a button for each trait. PCs can have quite a number of these, so it is not recommended to run this command on PCs. (PC/NPC)
 - **pc** creates full suite of buttons for everything but traits. Although this will also work on npcs, the intent is to not include trait buttons for pcs, which can get rather numerous. 
 - **bonusactions** Creates a button for each bonus action. This will be ignored on PCs since only NPC sheets have a repeating attribute for bonus actions.
 - **reactions** Creates a button for each reaction. This will be ignored on PCs since only NPC sheets have a repeating attribute for reactions.
@@ -45,7 +44,7 @@ Examples:
 ## Pathfinder Second Edition by Roll20 Sheet
 All PF2 use requires adding the argument "pf2" to the argument list. Otherwise the script will try to create Token Actions for the 5e sheet. Until all sheets have a uniform sheet identifier attribute, this is necessary.
 You can create specific classes of abilities by using the following arguments separated by spaces:
-- **pf2** Required on all PF2 commands
+- **pf2** *Required on all PF2 commands*
 - **attacks** Creates a button for each attack. TAM will append a '-M' or '-R' after the name to distinguish melee from ranged. Each Attack will have a two buttons immediately following for Attack 2 and Attack 3. These will be abbreviated using the first two characters from each word in the Attack. Example `Silver Dagger` `SiDa-2` `SiDa-3` (PC/NPC)
 - **reactive**  Creates a button for each reaction (NPC)
 - **offensive**  Creates a button for each offensive ability (PC/NPC)
@@ -57,6 +56,8 @@ You can create specific classes of abilities by using the following arguments se
 - **name** Normally, Token Actions are created using the character_id. They will still function even if the character is renamed. However this is not always desireable. If a character is moved to a new game via the Character Vault, it will receive a new character_id, and the token actions will not function. If you intend to move the character, use the "name" argument in the string and it will call the token actions by name.
 
 Examples:
+
+**!ta pf2** will generate a full suite of token actions For PCs, this would be the same as typing `!ta pf2 checks saves attacks offensive reactive interaction spells`. For PCs, this would be the same as typing `!ta pf2 checks saves attacks offensive spells`.
 
 **!ta pf2 saves checks** will create token ability buttons for Skill Checks and Saving Throws.
 
