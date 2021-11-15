@@ -424,15 +424,28 @@ var tokenAction = tokenAction || (function () {
                     repeatingName = "a-" + abbreviateName(attr.get('current').replace(/\.\s*$/, "")),
 
                     repeatingAction = repeatingAction = getRepeatingAction(id, pattern.replace(/%%RID%%/g, repeatingId), usename);
+                    
+                //5e Replacements
                 if (pattern.match('npcaction-l')) {
                     repeatingName = "al-" + abbreviateName(attr.get('current').replace(/\.\s*$/, ""));
                 }
                 if (pattern.match('bonusaction')) {
                     repeatingName = "b-" + abbreviateName(attr.get('current').replace(/\.\s*$/, ""));
                 }
+                
+                
+                
+                //PF2 replacements
                 if (pattern.match('free-actions-reactions_')) {
                     repeatingName = "r-" + abbreviateName(attr.get('current').replace(/\.\s*$/, ""));
                 }
+                if (pattern.match('ATTACK-DAMAGE-NPC')) {
+                    repeatingName = "a-" + abbreviateName(attr.get('current').replace(/\.\s*$/, ""));
+                }
+
+                
+                
+                
                 var checkAbility = findObjs({
                     _type: 'ability',
                     _characterid: id,
@@ -449,6 +462,27 @@ var tokenAction = tokenAction || (function () {
                         characterid: id,
                         istokenaction: true
                     });
+                    
+                    
+                    
+                    
+                                        if (sheet === 'pf2' && repeatingAction.includes('ATTACK-DAMAGE-NPC')) {
+                        createObj("ability", {
+                            name: getFirstCharacters(repeatingName) + ((repeatingName.includes('-R')) ? '-R2':'2'),
+                            action: repeatingAction.replace('ATTACK-DAMAGE-NPC', 'ATTACK-DAMAGE-NPC2'),
+                            characterid: id,
+                            istokenaction: true
+                        });
+                        createObj("ability", {
+                            name: getFirstCharacters(repeatingName) + ((repeatingName.includes('-R')) ? '-R3':'3'),
+                            action: repeatingAction.replace('ATTACK-DAMAGE-NPC', 'ATTACK-DAMAGE-NPC3'),
+                            characterid: id,
+                            istokenaction: true
+                        });
+
+                    }
+
+                    
                 }
             });
         },
@@ -457,11 +491,11 @@ var tokenAction = tokenAction || (function () {
             var char;
             var keywords = ['attacks', 'bonusactions', 'spells', 'abilities', 'saves', 'checks', 'traits', 'reactions', 'init', 'pf2', 'offensive'];
             if (!(msg.type === 'api' && msg.selected && (msg.content.search(/^!ta\b/) || msg.content.search(/^!deleteta\b/) || msg.content.search(/^!deleteallta\b/) || msg.content.search(/^!sortta\b/)))) return;
-
+let whom = `"${msg.who.replace(' (GM)','')}"`;
             var args = msg.content.split(" ");
             const usename = args.includes('name') ? true : false;
             sheet = ((args.includes('pf2')) ? 'pf2' : '5e');
-            log('sheet is ' + sheet);
+            //log('sheet is ' + sheet);
 
             if (msg.content.search(/^(!ta|!sortta)\b/) !== -1) {
                 let baseCommand = args[0];
@@ -492,7 +526,7 @@ var tokenAction = tokenAction || (function () {
                     if (args.length === 3 && args.includes('name')) {
                         args = [baseCommand, 'pf2', 'name', 'attacks', 'automatic', 'reactive', 'interaction', 'innate', 'offensive', 'spells', 'actions', 'focus', 'ritual', 'checks', 'saves', 'init'];
                     }
-                    log('args = ' + args);
+                    //log('args = ' + args);
                 }
 
 
@@ -501,7 +535,7 @@ var tokenAction = tokenAction || (function () {
                     let header = "<div style='width: 100%; color: #000; border: 1px solid #000; background-color: #fff; box-shadow: 0 0 3px #000; width: 90%; display: block; text-align: left; font-size: 13px; padding: 5px; margin-bottom: 0.25em; font-family: sans-serif; white-space: pre-wrap;'>";
                     let helpText = "<b>Token Action Creator</b> <i>v." + version + "</i><br><i>Created by Kevin,<br>Modified by keithcurtis</i><br>This script creates token actions on selected tokens for the D&D 5e by Roll20 sheet. Tokens must represent character sheets, either PC or NPC.<br><br><b>!ta</b> This command will create a full suite of token abilities.<br><b>!deleteta</b> will delete ALL token actions for the selected character, whether they were created by this script or not. Use with caution.<br><br>You can create specific classes of abilities by using the following arguments separated by spaces:<ul><li><b>attacks</b> Creates a button for each attack. In the case of NPCs, this includes all Actions.<br><li><b>traits</b> Creates a button for each trait. PCs can have quite a number of these, so it is not recommended to run this command on PCs.<br><li><b>bonusactions</b> Creates a button for each npcbonusaction. This will be ignored on PCs since only NPC sheets have a repeating attribute for bonusactions.<br><li><li><b>reactions</b> Creates a button for each reaction. This will be ignored on PCs since only NPC sheets have a repeating attribute for reactions.<br><li><b>spells</b>Creates a button that calls up a chat menu of all spells the character can cast.<br><li><b>checks</b> Creates a drop down menu of all Ability and Skill (Ability) checks<br><li><b>saves</b> Creates a dropdown menu of all saving throws<br><li><b>init</b> Creates a button that rolls initiative for the selected token<br><li><b>help</b> Calls up this help documentation</ul><br>Example:<br><b>!ta saves checks</b> will create token ability buttons for Ability Checks and Saving Throws.";
                     let footer = '</div>';
-                    sendChat("TokenAction", "/w " + msg.who + header + helpText + footer);
+                    sendChat("TokenAction", `/w ${whom} ${header}${helpText}${footer}`);
                     return;
                 }
             }
@@ -574,7 +608,7 @@ var tokenAction = tokenAction || (function () {
                                 createSpell(a.id);
                             }
                         }
-                        sendChat("TokenAction", "/w " + msg.who + " Created 5e Token Actions for " + a.get('name') + ".");
+                        sendChat("TokenAction", `/w ${whom} Created 5e Token Actions for ${a.get('name')}.`);
                     });
 
 
@@ -638,7 +672,7 @@ var tokenAction = tokenAction || (function () {
                                 createPF2Spell(a.id);
                             }
                         }
-                        sendChat("TokenAction", "/w " + msg.who + " Created PF2 Token Actions for " + a.get('name') + ".");
+                        sendChat("TokenAction", `/w ${whom} Created PF2 Token Actions for ${a.get('name')}.`);
                     });
                 }
             } else if (msg.content.search(/^!deleteta\b/) !== -1) {
@@ -646,14 +680,14 @@ var tokenAction = tokenAction || (function () {
 
                 _.each(char, function (d) {
                     deleteAbilities(d.id);
-                    sendChat("TokenAction", "/w " + msg.who + " Deleted all unprotected Token Actions for " + d.get('name') + ".");
+                    sendChat("TokenAction", `/w ${whom} Deleted all unprotected Token Actions for ${d.get('name')}.`);
                 });
             } else if (msg.content.search(/^!deleteallta\b/) !== -1) {
                 char = _.uniq(getSelectedCharacters(msg.selected));
 
                 _.each(char, function (d) {
                     deleteAllAbilities(d.id);
-                    sendChat("TokenAction", "/w " + msg.who + " Deleted all Token Actions for " + d.get('name') + ".");
+                    sendChat("TokenAction", `/w ${whom} Deleted all Token Actions for ${d.get('name')}.`);
                 });
             } else if (msg.content.search(/^!sortta\b/) !== -1) {
 
@@ -697,13 +731,13 @@ var tokenAction = tokenAction || (function () {
                                 sortRepeating(/repeating_npcbonusaction_[^_]+_name\b/, 'repeating_npcbonusaction_%%RID%%_npc_roll_output', a.id, usename);
                             }
                         }
-                        sendChat("TokenAction", "/w " + msg.who + " Created Sorted 5e Token Actions for " + a.get('name') + ".");
+                        sendChat("TokenAction", `/w ${whom} Created Sorted 5e Token Actions for ${a.get('name')}.`);
                     });
 
 
                 } else {
                     _.each(char, function (a) {
-
+                        sendChat("TokenAction", `/w ${whom} **Using !sortta for Pathfinder characters is not recommended. Alphabetization destroys the logical order of the *Attack-Attack2-Attack3* progression.**`);
 
                         if (parseInt(isNpc(a.id)) === 1) {//PF2 Sorted
                             if (args.includes("init")) {
@@ -738,7 +772,7 @@ var tokenAction = tokenAction || (function () {
                                 createRepeating(/repeating_interaction-abilities_[^_]+_name\b/, 'repeating_interaction-abilities_%%RID%%_action-npc', a.id, usename);
                             }
                         }
-                        sendChat("TokenAction", "/w " + msg.who + " Created Sorted PF2 Token Actions for " + a.get('name') + ".");
+                        sendChat("TokenAction", `/w ${whom} Created Sorted PF2 Token Actions for ${a.get('name')}.`);
                     });
 
                 }
