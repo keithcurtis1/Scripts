@@ -157,6 +157,22 @@ var tokenAction = tokenAction || (function () {
 
                     }
 
+                    if (sheet === 'pf2' && repeatingAction.includes('ATTACK-DAMAGE}')) {
+                        createObj("ability", {
+                            name: getFirstCharacters(repeatingName) + ((repeatingName.includes('-R')) ? '-R2':'2'),
+                            action: repeatingAction.replace('ATTACK-DAMAGE', 'ATTACK-DAMAGE2'),
+                            characterid: id,
+                            istokenaction: true
+                        });
+                        createObj("ability", {
+                            name: getFirstCharacters(repeatingName) + ((repeatingName.includes('-R')) ? '-R3':'3'),
+                            action: repeatingAction.replace('ATTACK-DAMAGE', 'ATTACK-DAMAGE3'),
+                            characterid: id,
+                            istokenaction: true
+                        });
+
+                    }
+
 
                 }
             });
